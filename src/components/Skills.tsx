@@ -20,11 +20,10 @@ const Skills = () => {
       icon: Code2,
       color: "primary",
       skills: [
-        { name: "React/Next.js", level: 95 },
-        { name: "TypeScript", level: 90 },
-        { name: "Vue.js", level: 85 },
-        { name: "Tailwind CSS", level: 95 },
-        { name: "Three.js/R3F", level: 80 }
+        { name: "React", level: 95 },
+        { name: "TypeScript", level: 80 },
+        { name: "Tailwind CSS", level: 90 },
+        { name: "Three.js/R3F", level: 60 }
       ]
     },
     {
@@ -36,7 +35,7 @@ const Skills = () => {
         { name: "Python", level: 85 },
         { name: "PostgreSQL", level: 88 },
         { name: "MongoDB", level: 85 },
-        { name: "Redis", level: 80 }
+        { name: "FastAPI", level: 80 }
       ]
     },
     {
@@ -47,8 +46,7 @@ const Skills = () => {
         { name: "TensorFlow", level: 85 },
         { name: "scikit-learn", level: 90 },
         { name: "Pandas/NumPy", level: 88 },
-        { name: "OpenAI API", level: 85 },
-        { name: "Computer Vision", level: 75 }
+        { name: "Computer Vision", level: 45 }
       ]
     },
     {
@@ -57,19 +55,17 @@ const Skills = () => {
       color: "primary",
       skills: [
         { name: "Docker", level: 85 },
-        { name: "AWS", level: 80 },
-        { name: "Kubernetes", level: 75 },
-        { name: "CI/CD", level: 85 },
-        { name: "Terraform", level: 70 }
+
       ]
     }
   ];
 
   const certifications = [
-    { name: "AWS Certified Developer", year: "2023", issuer: "Amazon" },
+    { name: "Scientic Computing With Python", year: "2023", issuer: "Freecodecamp" },
     { name: "TensorFlow Developer", year: "2023", issuer: "Google" },
-    { name: "React Specialist", year: "2022", issuer: "Meta" },
-    { name: "Node.js Certified", year: "2022", issuer: "OpenJS Foundation" }
+    { name: "Back End Development and APIs", year: "2024", issuer: "Freecodecamp" },
+    { name: "JavaScript Algorithms and Data structures", year: "2023", issuer: "Freecodecamp" },
+    { name: "Data Analysis with Python", year: "2025", issuer: "Freecodecamp" },
   ];
 
   const getColorClass = (color: string, type: string) => {

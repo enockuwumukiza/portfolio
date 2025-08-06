@@ -5,17 +5,17 @@ import { Brain, Code, Database, Rocket, Users, Award } from "lucide-react";
 
 const About = () => {
   const stats = [
-    { label: "Years Experience", value: "5+", icon: Award },
-    { label: "Projects Completed", value: "50+", icon: Rocket },
-    { label: "Happy Clients", value: "30+", icon: Users },
-    { label: "Technologies", value: "20+", icon: Code },
+    { label: "Years Experience", value: "3+", icon: Award },
+    { label: "Projects Completed", value: "10+", icon: Rocket },
+    { label: "Happy Clients", value: "5+", icon: Users },
+    { label: "Technologies", value: "10+", icon: Code },
   ];
 
   const skills = [
-    { category: "Frontend", items: ["React", "TypeScript", "Next.js", "Vue.js", "Tailwind"] },
+    { category: "Frontend", items: ["React", "TypeScript", "Tailwind"] },
     { category: "Backend", items: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis"] },
-    { category: "ML/AI", items: ["Python", "TensorFlow", "scikit-learn", "Pandas", "OpenAI"] },
-    { category: "DevOps", items: ["Docker", "AWS", "CI/CD", "Kubernetes", "Terraform"] },
+    { category: "ML/AI", items: ["Python", "TensorFlow", "scikit-learn", "Pandas"] },
+    { category: "DevOps", items: ["Docker"] },
   ];
 
   return (
