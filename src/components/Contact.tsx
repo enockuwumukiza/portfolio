@@ -35,29 +35,29 @@ const Contact = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "hello@portfolio.dev",
-      href: "mailto:hello@portfolio.dev",
+      value: "enockuwumukiza850@gmail.com",
+      href: "mailto:enockuwumukiza850@gmail.com",
       description: "Best for detailed discussions"
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "/in/yourprofile",
-      href: "https://linkedin.com/in/yourprofile",
+      value: "/in/enock-uwumukiza-3086082b4",
+      href: "https://linkedin.com/in/enock-uwumukiza-3086082b4",
       description: "Professional networking"
     },
     {
       icon: Github,
       label: "GitHub",
-      value: "@yourusername",
-      href: "https://github.com/yourusername",
+      value: "@enockuwumukiza",
+      href: "https://github.com/enockuwumukiza",
       description: "Code collaboration"
     },
     {
       icon: Twitter,
       label: "Twitter",
-      value: "@yourhandle",
-      href: "https://twitter.com/yourhandle", 
+      value: "@enochrw7",
+      href: "https://twitter.com/enochrwa7", 
       description: "Quick updates & thoughts"
     }
   ];

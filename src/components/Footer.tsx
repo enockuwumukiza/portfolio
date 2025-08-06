@@ -92,6 +92,7 @@ const Footer = () => {
             <Heart className="h-4 w-4 text-red-500 animate-pulse" />
             <span>and lots of</span>
             <Coffee className="h-4 w-4 text-accent" />
+            <span>By <em>Enock</em></span>
           </div>
           
           <div className="text-sm text-muted-foreground">
