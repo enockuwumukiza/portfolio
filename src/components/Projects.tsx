@@ -3,43 +3,48 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Play, Brain, Zap, Globe } from "lucide-react";
+import wardrobeImage from "../../public/images/wardrobe.jpeg"
+import chatImage from "../../public/images/chat.png"
+import resumeImage from "../../public/images/resume.jpeg"
+import { Link } from "react-router-dom"
 
 const Projects = () => {
+
   const projects = [
     {
-      title: "AI-Powered Analytics Dashboard",
-      description: "Real-time analytics platform with ML-driven insights and predictive modeling. Features automated anomaly detection and smart recommendations.",
-      image: "/api/placeholder/600/400",
-      tech: ["React", "TypeScript", "Python", "TensorFlow", "PostgreSQL"],
+      title: "AI-Powered Digital Wardrobe",
+      description: "AI-Powered Digital wardrobe management system with outfit matching and smart recommendations.",
+      image: wardrobeImage,
+      tech: ["React", "TypeScript", "Python", "TensorFlow","Sklearn", "MySQL"],
       category: "Machine Learning",
       icon: Brain,
-      features: ["Predictive Analytics", "Anomaly Detection", "Real-time Processing"],
+      features: ["Outfit type detection", "Background removal", "Real-time Processing"],
       demo: "#",
-      github: "#",
+      github: "https://github.com/Enochrwa/myward",
       color: "primary"
     },
     {
-      title: "Smart E-Commerce Platform",
-      description: "Full-stack e-commerce solution with intelligent product recommendations, dynamic pricing, and automated inventory management.",
-      image: "/api/placeholder/600/400",
-      tech: ["Next.js", "Node.js", "Redis", "Stripe", "OpenAI"],
+      title: "Resume Builder",
+      description: "Simplified resume builder with built-in templates and exports",
+      image: resumeImage,
+      tech: ["Next.js", "Node.js", "Redis",, "ReactJS"],
       category: "Full-Stack",
       icon: Zap,
-      features: ["AI Recommendations", "Dynamic Pricing", "Inventory Automation"],
-      demo: "#",
-      github: "#",
+      features: ["Built-in templates", "Dynamic Pricing", "smart exports"],
+      demo: "https://resumeforge-five.vercel.app",
+      github: "https://github.com/Enochrwa/resumee-craft-studio",
       color: "secondary"
     },
     {
-      title: "Real-Time Collaboration Tool",
+      title: "Real-Time Chat application",
       description: "Modern team collaboration platform with live editing, smart notifications, and AI-powered meeting insights.",
-      image: "/api/placeholder/600/400",
+      image: chatImage,
       tech: ["React", "Socket.io", "MongoDB", "Express", "Docker"],
       category: "Real-Time Apps",
       icon: Globe,
-      features: ["Live Collaboration", "Smart Notifications", "Meeting AI"],
+      features: ["Live video and audio calls", "Smart Notifications", "video and audio recording"],
       demo: "#",
-      github: "#",
+      github: "https://github.com/enockuwumukiza/e-chat",
       color: "accent"
     }
   ];
@@ -110,9 +115,7 @@ const Projects = () => {
 
                   {/* Project Image */}
                   <div className="aspect-video rounded-lg bg-muted/20 border border-border/50 overflow-hidden">
-                    <div className={`w-full h-full bg-gradient-to-br from-${project.color}/20 to-${project.color}/5 flex items-center justify-center`}>
-                      <project.icon className={`h-16 w-16 text-${project.color}/50`} />
-                    </div>
+                    <img src={project?.image}/>
                   </div>
 
                   <CardTitle className="text-xl group-hover:text-primary transition-colors">
@@ -160,14 +163,19 @@ const Projects = () => {
                       className={`bg-${project.color} hover:bg-${project.color}/90 flex-1`}
                     >
                       <Play className="mr-2 h-4 w-4" />
-                      Live Demo
+                     <Link to={project?.demo}>
+                         Live Demo
+                     </Link>
                     </Button>
                     <Button 
                       variant="outline" 
                       size="sm"
                       className="border-border/50 hover:bg-muted/20"
                     >
-                      <Github className="h-4 w-4" />
+                      
+                      <Link to={project?.github}>
+                        <Github className="h-4 w-4" />
+                     </Link>
                     </Button>
                     <Button 
                       variant="outline" 

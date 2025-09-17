@@ -6,40 +6,25 @@ import { Calendar, MapPin, ExternalLink, Award } from "lucide-react";
 const Experience = () => {
   const experiences = [
     {
-      title: "Senior Full-Stack Developer",
+      title: "Senior Full-Stack Developer Intern",
       company: "TechCorp Inc.",
-      location: "San Francisco, CA",
-      period: "2022 - Present",
-      type: "Full-time",
-      description: "Leading development of AI-powered analytics platform serving 100K+ users. Built scalable microservices architecture and implemented ML-driven features.",
+      location: "Remote",
+      period: "2024 - 2025",
+      type: "Part-time",
+      description: "Built scalable microservices architecture and implemented ML-driven features.",
       achievements: [
         "Increased platform performance by 40% through optimization",
         "Led team of 5 developers in agile environment",
         "Implemented ML recommendation system improving user engagement by 60%",
-        "Architected CI/CD pipeline reducing deployment time by 75%"
+        
       ],
-      tech: ["React", "Node.js", "Python", "AWS", "Docker", "PostgreSQL"]
+      tech: ["React", "Node.js", "Python", "Docker", "PostgreSQL"]
     },
     {
-      title: "Full-Stack Developer",
-      company: "StartupXYZ",
-      location: "Austin, TX",
-      period: "2020 - 2022",
-      type: "Full-time",
-      description: "Developed MVP for fintech startup from concept to Series A. Built real-time trading platform with complex data visualization and ML-powered insights.",
-      achievements: [
-        "Built entire frontend architecture from scratch",
-        "Implemented real-time WebSocket connections for trading data",
-        "Created automated testing suite with 95% coverage",
-        "Optimized database queries reducing load times by 50%"
-      ],
-      tech: ["Vue.js", "Express", "MongoDB", "Socket.io", "Redis", "TensorFlow.js"]
-    },
-    {
-      title: "Frontend Developer",
+      title: "Frontend Developer Intern",
       company: "DesignStudio LLC",
       location: "Remote",
-      period: "2019 - 2020",
+      period: "2022- 2023",
       type: "Contract",
       description: "Specialized in creating pixel-perfect, responsive web applications for design agencies and creative studios. Focus on performance and user experience.",
       achievements: [
@@ -53,8 +38,8 @@ const Experience = () => {
     {
       title: "Software Engineering Intern",
       company: "BigTech Corporation",
-      location: "Seattle, WA",
-      period: "Summer 2019",
+      location: "Remote",
+      period: "Summer 2023",
       type: "Internship",
       description: "Contributed to large-scale distributed systems serving millions of users. Gained experience in enterprise development practices and system design.",
       achievements: [
@@ -69,21 +54,14 @@ const Experience = () => {
 
   const education = [
     {
-      degree: "Master of Science in Computer Science",
-      school: "Stanford University",
-      location: "Stanford, CA",
-      period: "2017 - 2019",
-      focus: "Machine Learning & AI",
-      achievements: ["GPA: 3.9/4.0", "Research in Neural Networks", "Teaching Assistant for AI courses"]
+      degree: "Bachelor's degree in Computer Science",
+      school: "INES Ruhengeri University",
+      location: "Rwanda",
+      period: "2022 - 2025",
+      focus: "Software engeneering",
+      achievements: ["GPA: 3.9/4.0", "Research in Machine learning", "Application of ML in health care"]
     },
-    {
-      degree: "Bachelor of Science in Software Engineering",
-      school: "University of California, Berkeley",
-      location: "Berkeley, CA", 
-      period: "2013 - 2017",
-      focus: "Software Systems",
-      achievements: ["Magna Cum Laude", "President of CS Society", "Hackathon Winner (3x)"]
-    }
+   
   ];
 
   return (

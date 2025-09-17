@@ -73,14 +73,17 @@ const Navigation = () => {
               <Terminal className="mr-2 h-4 w-4" />
               Terminal
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="border-primary/50 text-primary hover:bg-primary/10 hover-lift"
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Resume
-            </Button>
+            <a href="/Enock_Resume.pdf" download>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="border-primary/50 text-primary hover:bg-primary/10 hover-lift"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Resume
+              </Button>
+            </a>
+
           </div>
 
           {/* Mobile Menu Button */}
