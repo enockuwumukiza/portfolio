@@ -1,0 +1,39 @@
+// Prisma Schema — Portfolio Backend
+// Run: npx prisma migrate dev --name init
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Contact messages ──────────────────────────────────────────
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  type      String   @default("general") // collaboration | hiring | general
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+// ── Analytics events ──────────────────────────────────────────
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  event     String   // page_view | project_click | resume_download | etc.
+  meta      Json?
+  ip        String?
+  userAgent String?
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@map("analytics_events")
+}
