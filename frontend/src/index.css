@@ -364,3 +364,13 @@
 body, nav, footer, header, section, article, aside, main {
   transition: background-color 0.25s ease, border-color 0.2s ease;
 }
+
+/* Currently-building banner offset — push nav + content down when banner is present */
+.has-banner {
+  padding-top: 32px;
+}
+
+/* Scroll padding for sticky nav + optional banner */
+html {
+  scroll-padding-top: 80px;
+}

@@ -1,323 +1,369 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { X, Minus, Square, Terminal } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { X, Terminal, Minus } from 'lucide-react';
 
 interface TerminalLine {
   id: number;
-  type: 'input' | 'output' | 'error';
+  type: 'input' | 'output' | 'error' | 'success' | 'ascii';
   text: string;
-  timestamp?: string;
+}
+
+let lineId = 100;
+
+const ASCII_BANNER = [
+  ' ███████╗██╗   ██╗',
+  ' ██╔════╝██║   ██║',
+  ' █████╗  ██║   ██║',
+  ' ██╔══╝  ██║   ██║',
+  ' ███████╗╚██████╔╝',
+  ' ╚══════╝ ╚═════╝ ',
+  ' Enock Uwumukiza — Full-Stack & ML Engineer',
+  ' Kigali, Rwanda 🇷🇼 → building for the world',
+];
+
+const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine['type']; text: string }[]; scroll?: string }> = {
+  help: () => ({
+    lines: [
+      { type: 'output', text: '' },
+      { type: 'success', text: 'AVAILABLE COMMANDS' },
+      { type: 'output', text: '──────────────────────────────────────' },
+      { type: 'output', text: '  whoami        — ASCII banner + bio' },
+      { type: 'output', text: '  skills        — Full tech stack by category' },
+      { type: 'output', text: '  projects      — All projects with GitHub links' },
+      { type: 'output', text: '  contact        — Email & social channels' },
+      { type: 'output', text: '  blog           — Recent writing topics' },
+      { type: 'output', text: '  sudo hire enock — Make an important decision 😄' },
+      { type: 'output', text: '  clear           — Clear terminal' },
+      { type: 'output', text: '  exit / q        — Close terminal' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  ↑ / ↓          — Command history' },
+      { type: 'output', text: '' },
+    ],
+  }),
+
+  whoami: () => ({
+    lines: [
+      { type: 'output', text: '' },
+      ...ASCII_BANNER.map(t => ({ type: 'ascii' as const, text: t })),
+      { type: 'output', text: '' },
+      { type: 'output', text: '  I\'m a self-taught developer who went from studying' },
+      { type: 'output', text: '  biomedical sciences at INES Ruhengeri to building' },
+      { type: 'output', text: '  full-stack products, ML systems, and React Native apps.' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  Currently: HandyRwanda (Sprint 10) + INZIRA EDRPS clinical AI' },
+      { type: 'output', text: '  Stack:     TypeScript · FastAPI · Expo · PostgreSQL · sklearn' },
+      { type: 'output', text: '  Available: Remote, Contract, Full-time (CAT UTC+2)' },
+      { type: 'output', text: '' },
+    ],
+  }),
+
+  skills: () => ({
+    lines: [
+      { type: 'output', text: '' },
+      { type: 'success', text: 'TECH STACK' },
+      { type: 'output', text: '──────────────────────────────────────' },
+      { type: 'output', text: '  Frontend   React · TypeScript · Next.js · Tailwind · Framer Motion' },
+      { type: 'output', text: '  Backend    FastAPI · Node.js/Express · Socket.IO · Prisma' },
+      { type: 'output', text: '  Mobile     React Native (Expo) · NativeWind · WebRTC' },
+      { type: 'output', text: '  Database   PostgreSQL · MongoDB · Redis · MySQL' },
+      { type: 'output', text: '  ML/AI      scikit-learn · XGBoost · TensorFlow · SHAP · Pandas' },
+      { type: 'output', text: '  DevOps     Docker · GitHub Actions · Nginx · Vercel · Railway' },
+      { type: 'output', text: '  Learning   Rust (NAPI-RS) · WebGPU · Turborepo MFE' },
+      { type: 'output', text: '' },
+    ],
+    scroll: '#skills',
+  }),
+
+  projects: () => ({
+    lines: [
+      { type: 'output', text: '' },
+      { type: 'success', text: 'PROJECTS' },
+      { type: 'output', text: '──────────────────────────────────────' },
+      { type: 'output', text: '  [★] HandyRwanda     — Rwanda service marketplace (MTN MoMo, Socket.IO, Expo)' },
+      { type: 'output', text: '       github.com/Enochrwa/HandyRwanda' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  [★] INZIRA EDRPS    — Clinical AI for 5 disease modules (XGBoost, SHAP)' },
+      { type: 'output', text: '       github.com/Enochrwa/inzira-edrps' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  [ ] AI Wardrobe     — Outfit detection + recommendation (TensorFlow)' },
+      { type: 'output', text: '       github.com/Enochrwa/myward' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  [ ] Resume Builder  — Professional résumés with PDF export (live on Vercel)' },
+      { type: 'output', text: '       resumeforge-five.vercel.app' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  [ ] eChat           — Real-time team chat with WebRTC video/audio' },
+      { type: 'output', text: '       github.com/enockuwumukiza/e-chat' },
+      { type: 'output', text: '' },
+    ],
+    scroll: '#projects',
+  }),
+
+  contact: () => ({
+    lines: [
+      { type: 'output', text: '' },
+      { type: 'success', text: 'CONTACT' },
+      { type: 'output', text: '──────────────────────────────────────' },
+      { type: 'output', text: '  Email     wwwenockuwumukiza@gmail.com' },
+      { type: 'output', text: '  LinkedIn  linkedin.com/in/enock-uwumukiza-3086082b4' },
+      { type: 'output', text: '  GitHub    github.com/enockuwumukiza' },
+      { type: 'output', text: '  Twitter   @enochrw7' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  Timezone  CAT (UTC+2) · Kigali, Rwanda' },
+      { type: 'output', text: '  Status    ✅ Open to opportunities' },
+      { type: 'output', text: '  Reply in  < 24 hours' },
+      { type: 'output', text: '' },
+    ],
+    scroll: '#contact',
+  }),
+
+  blog: () => ({
+    lines: [
+      { type: 'output', text: '' },
+      { type: 'success', text: 'WRITING (COMING SOON)' },
+      { type: 'output', text: '──────────────────────────────────────' },
+      { type: 'output', text: '  → "Building a Service Marketplace for Rwanda: What I Learned"' },
+      { type: 'output', text: '  → "End-to-End Voice Messaging in React Native: Sprint 7 Debrief"' },
+      { type: 'output', text: '  → "Why I Chose FastAPI Over Node.js for HandyRwanda\'s Backend"' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  Blog launching Q3 2025 — watch this space.' },
+      { type: 'output', text: '' },
+    ],
+  }),
+};
+
+function fireConfetti() {
+  // Simple CSS confetti burst using DOM
+  const colours = ['#F5A623', '#C4501A', '#F5F2EE', '#22c55e', '#3b82f6'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position:fixed; pointer-events:none; z-index:9999;
+      width:8px; height:8px; border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+      background:${colours[Math.floor(Math.random() * colours.length)]};
+      left:${Math.random() * 100}vw; top:-10px;
+      animation: confettiFall ${0.8 + Math.random() * 1.4}s ${Math.random() * 0.6}s ease-in forwards;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2500);
+  }
+  // Inject keyframes once
+  if (!document.getElementById('confetti-style')) {
+    const style = document.createElement('style');
+    style.id = 'confetti-style';
+    style.textContent = `@keyframes confettiFall { to { transform: translateY(110vh) rotate(${Math.random() > 0.5 ? '' : '-'}720deg); opacity:0; } }`;
+    document.head.appendChild(style);
+  }
 }
 
 const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
   const [lines, setLines] = useState<TerminalLine[]>([
-    { id: 1, type: 'output', text: 'Welcome to DevTerminal v2.0.1', timestamp: new Date().toLocaleTimeString() },
-    { id: 2, type: 'output', text: 'Interactive developer portfolio terminal' },
-    { id: 3, type: 'output', text: 'Type "help" for available commands' },
-    { id: 4, type: 'output', text: '' }
+    { id: lineId++, type: 'output', text: '╔══════════════════════════════════════╗' },
+    { id: lineId++, type: 'output', text: '║  DevTerminal v3.0 — Enock Uwumukiza  ║' },
+    { id: lineId++, type: 'output', text: '╚══════════════════════════════════════╝' },
+    { id: lineId++, type: 'output', text: '' },
+    { id: lineId++, type: 'output', text: 'Type "help" for available commands.' },
+    { id: lineId++, type: 'output', text: 'Tip: try "sudo hire enock" 😉' },
+    { id: lineId++, type: 'output', text: '' },
   ]);
-  const [currentInput, setCurrentInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [input, setInput] = useState('');
+  const [history, setHistory] = useState<string[]>([]);
+  const [histIdx, setHistIdx] = useState(-1);
+  const [minimized, setMinimized] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const commands = {
-    help: () => [
-      'Available commands:',
-      '  about         - Learn about me',
-      '  skills        - View my technical skills',
-      '  projects      - List recent projects',
-      '  contact       - Get contact information',
-      '  experience    - View work experience',
-      '  easter        - Find hidden features',
-      '  clear         - Clear terminal',
-      '  whoami        - Current user info',
-      '  date          - Current date and time',
-      '  echo <text>   - Echo text back',
-      '  exit          - Close terminal'
-    ],
-    about: () => [
-      'ENOCK UWUMUKIZA',
-      '================',
-      'Full-Stack Developer & ML Engineer',
-      'Passionate about creating intelligent web experiences',
-      'Specializing in React, Node.js, Python, and Machine Learning',
-      'Building the future, one line of code at a time 🚀',
-      '',
-      'Navigating to About section...'
-    ],
-    skills: () => [
-      'Technical Skills:',
-      '================',
-      'Frontend: React, TypeScript, Next.js, Vue.js',
-      'Backend:  Node.js, Python, Express, FastAPI',
-      'Database: PostgreSQL, MongoDB, Redis',
-      'ML/AI:    TensorFlow, PyTorch, scikit-learn',
-      'Cloud:    AWS, Docker, Kubernetes',
-      'Other:    Git, Linux, CI/CD, WebGL',
-      '',
-      'Navigating to Skills section...'
-    ],
-    projects: () => [
-      'Recent Projects:',
-      '===============',
-      '1. AI Analytics Dashboard - ML-powered insights platform',
-      '2. Smart E-Commerce - Intelligent recommendation engine',
-      '3. Real-time Collaboration Tool - Live editing with AI',
-      '4. Portfolio Terminal - Interactive command interface',
-      '',
-      'Use "project <number>" for details',
-      '',
-      'Navigating to Projects section...'
-    ],
-    contact: () => [
-      'Contact Information:',
-      '==================',
-      'Email:    hello@portfolio.dev',
-      'LinkedIn: /in/yourprofile',
-      'GitHub:   @yourusername',
-      'Twitter:  @yourhandle',
-      '',
-      'Response time: Usually within 24 hours ⚡',
-      '',
-      'Navigating to Contact section...'
-    ],
-    experience: () => [
-      'Work Experience:',
-      '===============',
-      '2022-Present: Senior Full-Stack Developer @ TechCorp',
-      '2020-2022:    Full-Stack Developer @ StartupXYZ',
-      '2019-2020:    Frontend Developer @ DesignStudio',
-      '2019:         Software Engineering Intern @ BigTech',
-      '',
-      'Education: MS Computer Science, Stanford University',
-      '',
-      'Navigating to Experience section...'
-    ],
-    easter: () => [
-      'Easter Eggs Found! 🥚',
-      '===================',
-      '• Try typing "matrix" for a surprise',
-      '• Use "joke" for developer humor',
-      '• Type "coffee" to fuel your coding',
-      '• Enter "wisdom" for programming quotes',
-      '• Use "ascii" for ASCII art'
-    ],
-    whoami: () => [
-      'guest@portfolio-terminal',
-      'Visitor exploring the developer portfolio',
-      'Access level: Public',
-      'Session started: ' + new Date().toLocaleString()
-    ],
-    date: () => [new Date().toString()],
-    matrix: () => [
-      '01001000 01100101 01101100 01101100 01101111',
-      '01010111 01101111 01110010 01101100 01100100',
-      '',
-      'The Matrix has you... 🕴️'
-    ],
-    joke: () => [
-      'Why do programmers prefer dark mode?',
-      '',
-      'Because light attracts bugs! 🐛😄'
-    ],
-    coffee: () => [
-      '      (',
-      '       )     (',
-      '    ___...(-------)-...___',
-      '.-""       )    (          """-.',
-      '\'--.___..-(     )-.___..--\'/',
-      '          \'-____/\'',
-      '',
-      'Coffee dispensed! ☕ Keep coding!'
-    ],
-    wisdom: () => [
-      '"Talk is cheap. Show me the code." - Linus Torvalds',
-      '',
-      '"Code is like humor. When you have to explain it, it\'s bad." - Cory House',
-      '',
-      '"The best error message is the one that never shows up." - Thomas Fuchs'
-    ],
-    ascii: () => [
-      '    ____                 __                  ',
-      '   / __ -__  _   _____  / /___  ____  ___  _____',
-      '  / / / / _ \\| | / / _ \\/ / __ \\/ __ \\/ _ \\/ ___/',
-      ' / /_/ /  __/| |/ /  __/ / /_/ / /_/ /  __/ /',
-      '/_____/-__/ |___/-__/_/-___/ .___/-__/_/',
-      '                            /_/',
-      '',
-      'Welcome to the developer zone! 👨‍💻'
-    ]
-  };
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+    }, 30);
+  }, []);
 
-  const executeCommand = (cmd: string) => {
-    const [command, ...args] = cmd.toLowerCase().trim().split(' ');
-    const timestamp = new Date().toLocaleTimeString();
+  const addLines = useCallback((newLines: { type: TerminalLine['type']; text: string }[]) => {
+    setLines(prev => [...prev, ...newLines.map(l => ({ ...l, id: lineId++ }))]);
+    scrollToBottom();
+  }, [scrollToBottom]);
 
-    // Add the input line
-    const inputLine: TerminalLine = {
-      id: Date.now(),
-      type: 'input',
-      text: `guest@portfolio:~$ ${cmd}`,
-      timestamp
-    };
+  const handleCommand = useCallback((raw: string) => {
+    const trimmed = raw.trim();
+    if (!trimmed) return;
 
-    if (command === 'clear') {
-      setLines([inputLine]);
+    // Add input echo
+    addLines([{ type: 'input', text: `❯ ${trimmed}` }]);
+
+    // History
+    setHistory(h => [trimmed, ...h].slice(0, 50));
+    setHistIdx(-1);
+
+    const lower = trimmed.toLowerCase();
+
+    if (lower === 'clear') {
+      setLines([]);
       return;
     }
-
-    if (command === 'exit') {
+    if (lower === 'exit' || lower === 'q') {
       onClose();
       return;
     }
-
-    if (command === 'echo') {
-      const outputLines = [
-        inputLine,
-        { id: Date.now() + 1, type: 'output' as const, text: args.join(' ') },
-        { id: Date.now() + 2, type: 'output' as const, text: '' }
-      ];
-      setLines(prev => [...prev, ...outputLines]);
+    if (lower === 'sudo hire enock') {
+      fireConfetti();
+      addLines([
+        { type: 'output', text: '' },
+        { type: 'success', text: '🎉 EXCELLENT DECISION! 🎉' },
+        { type: 'output', text: '  Initiating onboarding sequence...' },
+        { type: 'output', text: '' },
+        { type: 'output', text: '  ✅ TypeScript proficiency: verified' },
+        { type: 'output', text: '  ✅ FastAPI backend: deployed' },
+        { type: 'output', text: '  ✅ Rwanda time zone: UTC+2, compatible' },
+        { type: 'output', text: '  ✅ Coffee dependency: Rwandan beans ✓' },
+        { type: 'output', text: '' },
+        { type: 'success', text: '  → Reach out at: wwwenockuwumukiza@gmail.com' },
+        { type: 'output', text: '' },
+      ]);
       return;
     }
 
-    const commandFunction = commands[command as keyof typeof commands];
-    if (commandFunction) {
-      const output = commandFunction();
-      const outputLines = [
-        inputLine,
-        ...output.map((line, index) => ({
-          id: Date.now() + index + 1,
-          type: 'output' as const,
-          text: line
-        })),
-        { id: Date.now() + output.length + 1, type: 'output' as const, text: '' }
-      ];
-      setLines(prev => [...prev, ...outputLines]);
+    // Scroll hint commands
+    const scrollMap: Record<string, string> = { about: '#about', projects: '#projects', skills: '#skills', contact: '#contact', experience: '#experience' };
+    const goTo = scrollMap[lower];
+    if (goTo && !COMMANDS[lower]) {
+      addLines([{ type: 'output', text: `Navigating to ${lower}…` }]);
+      setTimeout(() => document.querySelector(goTo)?.scrollIntoView({ behavior: 'smooth' }), 300);
+      return;
+    }
 
-      // Navigation handling for section commands
-      const navigationCommands = ['about', 'skills', 'projects', 'experience', 'contact'];
-      if (navigationCommands.includes(command)) {
-        setTimeout(() => {
-          const sectionId = command === 'about' ? 'about' : command;
-          const section = document.getElementById(sectionId);
-          if (section) {
-            onClose(); // Close terminal first
-            setTimeout(() => {
-              section.scrollIntoView({ behavior: 'smooth' });
-            }, 300);
-          }
-        }, 2500); // Wait for message to be read (2.5 seconds)
+    const cmdFn = COMMANDS[lower];
+    if (cmdFn) {
+      const result = cmdFn();
+      addLines(result.lines);
+      if (result.scroll) {
+        setTimeout(() => document.querySelector(result.scroll!)?.scrollIntoView({ behavior: 'smooth' }), 500);
       }
-    } else {
-      const errorLines = [
-        inputLine,
-        { id: Date.now() + 1, type: 'error' as const, text: `Command not found: ${command}` },
-        { id: Date.now() + 2, type: 'output' as const, text: 'Type "help" for available commands' },
-        { id: Date.now() + 3, type: 'output' as const, text: '' }
-      ];
-      setLines(prev => [...prev, ...errorLines]);
+      return;
+    }
+
+    // Unknown command
+    addLines([
+      { type: 'error', text: `Command not found: ${trimmed}` },
+      { type: 'output', text: 'Type "help" to see available commands.' },
+      { type: 'output', text: '' },
+    ]);
+  }, [addLines, onClose]);
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleCommand(input);
+      setInput('');
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const newIdx = Math.min(histIdx + 1, history.length - 1);
+      setHistIdx(newIdx);
+      setInput(history[newIdx] ?? '');
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const newIdx = Math.max(histIdx - 1, -1);
+      setHistIdx(newIdx);
+      setInput(newIdx === -1 ? '' : history[newIdx] ?? '');
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      const partial = input.toLowerCase();
+      const match = Object.keys(COMMANDS).find(k => k.startsWith(partial));
+      if (match) setInput(match);
+    } else if (e.key === 'Escape') {
+      onClose();
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (currentInput.trim()) {
-      setIsTyping(true);
-      setTimeout(() => {
-        executeCommand(currentInput);
-        setCurrentInput('');
-        setIsTyping(false);
-      }, 200);
-    }
+  // Focus input on mount
+  useEffect(() => { inputRef.current?.focus(); }, []);
+
+  const lineClass: Record<TerminalLine['type'], string> = {
+    input:   'text-primary font-semibold',
+    output:  'text-muted-foreground',
+    error:   'text-red-400',
+    success: 'text-green-400 font-semibold',
+    ascii:   'text-primary/80 font-mono text-xs',
   };
-
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, [lines]);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      className="fixed inset-4 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <Card className="w-full max-w-4xl h-full max-h-[80vh] bg-black border-primary/30 shadow-glow">
-        <CardHeader className="flex flex-row items-center justify-between p-3 bg-muted/10 border-b border-border/30">
+      <motion.div
+        drag
+        dragMomentum={false}
+        dragElastic={0}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: minimized ? 0.4 : 1, opacity: 1, y: minimized ? 200 : 0 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="w-full max-w-2xl bg-card border border-border/60 rounded-xl shadow-2xl overflow-hidden select-none"
+        style={{ cursor: 'grab' }}
+        onPointerDown={() => { document.body.style.cursor = 'grabbing'; }}
+        onPointerUp={() => { document.body.style.cursor = ''; }}
+      >
+        {/* Title bar */}
+        <div className="flex items-center justify-between px-4 py-3 bg-muted/40 border-b border-border/50 drag-handle">
           <div className="flex items-center gap-2">
             <Terminal className="h-4 w-4 text-primary" />
-            <span className="text-sm font-mono">terminal@portfolio</span>
+            <span className="text-sm font-mono font-medium">enock@portfolio:~</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-yellow-500/20">
-              <Minus className="h-3 w-3" />
-            </Button>
-            <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-green-500/20">
-              <Square className="h-3 w-3" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-6 w-6 p-0 hover:bg-red-500/20"
-              onClick={onClose}
+            <button
+              className="p-1 rounded hover:bg-muted/60 text-muted-foreground hover:text-yellow-400 transition-colors"
+              onClick={() => setMinimized(m => !m)}
+              aria-label="Minimize"
             >
-              <X className="h-3 w-3" />
-            </Button>
+              <Minus className="h-3.5 w-3.5" />
+            </button>
+            <button
+              className="p-1 rounded hover:bg-muted/60 text-muted-foreground hover:text-red-400 transition-colors"
+              onClick={onClose}
+              aria-label="Close terminal"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
           </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="p-0 h-full">
-          <div 
-            ref={terminalRef}
-            className="h-full font-mono text-sm p-4 overflow-y-auto bg-black text-green-400"
-            style={{ maxHeight: 'calc(80vh - 60px)' }}
-          >
-            <AnimatePresence>
-              {lines.map((line) => (
-                <motion.div
-                  key={line.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className={`mb-1 ${
-                    line.type === 'input' 
-                      ? 'text-white' 
-                      : line.type === 'error' 
-                      ? 'text-red-400' 
-                      : 'text-green-400'
-                  }`}
-                >
-                  {line.text}
-                </motion.div>
+        {/* Terminal body */}
+        {!minimized && (
+          <>
+            <div
+              ref={scrollRef}
+              className="h-80 overflow-y-auto p-4 font-mono text-xs leading-6 space-y-0.5"
+              style={{ scrollbarWidth: 'thin' }}
+              onClick={() => inputRef.current?.focus()}
+            >
+              {lines.map(line => (
+                <div key={line.id} className={lineClass[line.type]}>
+                  {line.text || '\u00A0'}
+                </div>
               ))}
-            </AnimatePresence>
-
-            {/* Current input line */}
-            <form onSubmit={handleSubmit} className="flex items-center text-white">
-              <span className="text-primary mr-1">guest@portfolio:~$</span>
+            </div>
+            {/* Input row */}
+            <div className="flex items-center gap-2 px-4 py-3 border-t border-border/50 bg-muted/20">
+              <span className="text-primary font-mono text-xs font-bold flex-shrink-0">❯</span>
               <input
                 ref={inputRef}
                 type="text"
-                value={currentInput}
-                onChange={(e) => setCurrentInput(e.target.value)}
-                className="flex-1 bg-transparent outline-none border-none text-white font-mono"
-                disabled={isTyping}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={onKeyDown}
+                className="flex-1 bg-transparent text-xs font-mono text-foreground outline-none placeholder:text-muted-foreground/40 caret-primary"
+                placeholder="type a command…"
+                autoComplete="off"
+                spellCheck={false}
+                aria-label="Terminal input"
               />
-              <span className="animate-pulse">_</span>
-            </form>
-          </div>
-        </CardContent>
-      </Card>
+              <span className="w-2 h-4 bg-primary animate-pulse rounded-sm flex-shrink-0" aria-hidden="true" />
+            </div>
+          </>
+        )}
+      </motion.div>
     </motion.div>
   );
 };

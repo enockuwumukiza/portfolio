@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Mail, Linkedin, Github, Twitter, Send, Coffee, Briefcase, MessageSquare, Calendar, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Linkedin, Github, Twitter, Send, Coffee, Briefcase, MessageSquare, Calendar, CheckCircle, AlertCircle, Clock, Video } from 'lucide-react';
 import { track } from '@/lib/analytics';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
@@ -68,6 +68,24 @@ const SMART_SUGGESTIONS: Record<ContactFormData['type'], { subject: string; mess
 
 const Contact = () => {
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const sectionRef = useRef<HTMLElement>(null);
+  const trackedRef = useRef(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !trackedRef.current) {
+          trackedRef.current = true;
+          track('contact_open', { context: 'viewport' });
+        }
+      },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   const {
     register,
@@ -102,7 +120,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 px-4">
+    <section id="contact" className="py-24 px-4" ref={sectionRef}>
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <motion.div
@@ -300,6 +318,33 @@ const Contact = () => {
                     </div>
                   </a>
                 ))}
+              </CardContent>
+            </Card>
+
+            {/* Book a call */}
+            <Card className="bg-gradient-card border-primary/20 border">
+              <CardContent className="p-5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Video className="h-4 w-4 text-primary" />
+                  <span className="font-semibold text-sm">Prefer to talk?</span>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Book a free 30-min intro call — no sales pitch, just a real conversation about your project or opportunity.
+                </p>
+                <a
+                  href="https://calendly.com/wwwenockuwumukiza"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('contact_open', { context: 'calendly_book_call' })}
+                >
+                  <Button size="sm" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Book a 30-min call
+                  </Button>
+                </a>
+                <p className="text-xs text-muted-foreground/60 flex items-center gap-1">
+                  <Clock className="h-3 w-3" /> Usually responds within 24 hours
+                </p>
               </CardContent>
             </Card>
 
