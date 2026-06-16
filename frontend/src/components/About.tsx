@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Rocket, Code, Cpu, Wrench } from 'lucide-react';
+import GitHubActivity from './GitHubActivity';
 
 // Sprint 3.4: Replace stat cards with career timeline, authentic quote, animated stagger
 
@@ -190,6 +191,7 @@ const About = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
+          className="mb-10"
         >
           <Card className="bg-gradient-card border-primary/20 max-w-3xl mx-auto">
             <CardContent className="p-8 text-center">
@@ -201,6 +203,9 @@ const About = () => {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* GitHub Activity Heatmap */}
+        <GitHubActivity />
       </div>
     </section>
   );
