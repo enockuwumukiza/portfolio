@@ -1,16 +1,43 @@
 {
   "name": "Enock Uwumukiza — Portfolio",
   "short_name": "Enock.dev",
-  "description": "Full-Stack Developer & ML Engineer from Kigali, Rwanda",
+  "description": "Full-Stack Developer & ML Engineer from Kigali, Rwanda. Building for the world.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "theme_color": "#F5A623",
   "background_color": "#0D0A06",
+  "lang": "en",
+  "categories": ["portfolio", "developer"],
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
       "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "url": "/#projects",
+      "description": "View Enock's projects"
+    },
+    {
+      "name": "Blog",
+      "url": "/blog",
+      "description": "Read Enock's tech blog"
+    },
+    {
+      "name": "Contact",
+      "url": "/#contact",
+      "description": "Get in touch"
     }
   ]
 }

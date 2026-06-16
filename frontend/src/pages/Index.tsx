@@ -14,6 +14,7 @@ import { track } from '@/lib/analytics';
 const About = lazy(() => import('@/components/About'));
 const Projects = lazy(() => import('@/components/Projects'));
 const Skills = lazy(() => import('@/components/Skills'));
+const Testimonials = lazy(() => import('@/components/Testimonials'));
 const Experience = lazy(() => import('@/components/Experience'));
 const Contact = lazy(() => import('@/components/Contact'));
 const Footer = lazy(() => import('@/components/Footer'));
@@ -95,6 +96,7 @@ function PortfolioContent() {
         <Suspense fallback={<SectionFallback />}><About /></Suspense>
         <Suspense fallback={<SectionFallback />}><Projects /></Suspense>
         <Suspense fallback={<SectionFallback />}><Skills /></Suspense>
+        <Suspense fallback={<SectionFallback />}><Testimonials /></Suspense>
         <Suspense fallback={<SectionFallback />}><Experience /></Suspense>
         <Suspense fallback={<SectionFallback />}><Contact /></Suspense>
       </main>

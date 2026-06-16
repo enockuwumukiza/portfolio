@@ -16,6 +16,7 @@ import contactRoutes from './routes/contact.routes';
 import projectRoutes from './routes/project.routes';
 import analyticsRoutes from './routes/analytics.routes';
 import healthRoutes from './routes/health.routes';
+import githubRoutes from './routes/github.routes';
 
 const app: Application = express();
 
@@ -60,6 +61,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/contact', contactLimiter, contactRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/github', githubRoutes);
 
 // ── Error handling ───────────────────────────────────────────
 app.use(notFound);
