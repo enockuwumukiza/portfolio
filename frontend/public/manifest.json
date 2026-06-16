@@ -1,0 +1,16 @@
+{
+  "name": "Enock Uwumukiza — Portfolio",
+  "short_name": "Enock.dev",
+  "description": "Full-Stack Developer & ML Engineer from Kigali, Rwanda",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#F5A623",
+  "background_color": "#0D0A06",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

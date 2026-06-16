@@ -25,7 +25,7 @@ export const submitContact = async (
 
     res.status(200).json({
       status: 'success',
-      message: 'Message received! I'll get back to you within 24 hours.',
+      message: "Message received! I'll get back to you within 24 hours.",
     });
   } catch (err) {
     next(err);
