@@ -17,4 +17,23 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          // Animation
+          'vendor-motion': ['framer-motion'],
+          // Particles (biggest chunk – isolated)
+          'vendor-particles': ['@tsparticles/react', '@tsparticles/slim', '@tsparticles/engine'],
+          // Form layer
+          'vendor-forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          // Utilities
+          'vendor-utils': ['lenis', 'react-helmet-async'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 });

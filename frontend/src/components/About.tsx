@@ -1,132 +1,203 @@
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Brain, Code, Database, Rocket, Users, Award } from "lucide-react";
+import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Rocket, Code, Cpu, Wrench } from 'lucide-react';
 
-const About = () => {
-  const stats = [
-    { label: "Years Experience", value: "3+", icon: Award },
-    { label: "Projects Completed", value: "10+", icon: Rocket },
-    { label: "Happy Clients", value: "5+", icon: Users },
-    { label: "Technologies", value: "10+", icon: Code },
-  ];
+// Sprint 3.4: Replace stat cards with career timeline, authentic quote, animated stagger
 
-  const skills = [
-    { category: "Frontend", items: ["React", "TypeScript", "Tailwind"] },
-    { category: "Backend", items: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis"] },
-    { category: "ML/AI", items: ["Python", "TensorFlow", "scikit-learn", "Pandas"] },
-    { category: "DevOps", items: ["Docker"] },
-  ];
+const TIMELINE = [
+  {
+    period: '2025 – Present',
+    role: 'Full-Stack Developer & ML Engineer',
+    context: 'Freelance & Open Source · Kigali, Rwanda',
+    achievement: 'Built HandyRwanda (Sprint 7), INZIRA EDRPS clinical AI, and KivuNova SaaS — all solo.',
+    icon: Cpu,
+  },
+  {
+    period: '2024',
+    role: 'Backend & Integrations',
+    context: 'Self-directed projects',
+    achievement: 'Shipped full Socket.IO migration across 3 layers, MTN MoMo/Airtel Money payments, Expo push notifications.',
+    icon: Code,
+  },
+  {
+    period: '2022 – 2023',
+    role: 'Biomedical Laboratory Sciences Student',
+    context: 'INES Ruhengeri · Rwanda Military Hospital (internship)',
+    achievement: 'Collected clinical data for AI research at RMH, started INZIRA EDRPS targeting 5 disease modules.',
+    icon: Rocket,
+  },
+];
+
+const BADGE_GROUPS = [
+  { label: 'Languages',   items: ['TypeScript', 'Python', 'JavaScript', 'Rust (learning)'] },
+  { label: 'Currently',   items: ['🚧 HandyRwanda — Sprint 7 shipped', '📖 Turborepo MFE architecture', '🔬 INZIRA EDRPS clinical AI'] },
+];
+
+const badgeContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+};
+
+const badgeItemVariants = {
+  hidden: { opacity: 0, scale: 0.85 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.35, ease: 'easeOut' } },
+};
+
+function useCountUp(target: number, trigger: boolean, duration = 1200) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!trigger) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const id = setInterval(() => {
+      start = Math.min(start + step, target);
+      setCount(Math.floor(start));
+      if (start >= target) clearInterval(id);
+    }, 16);
+    return () => clearInterval(id);
+  }, [target, trigger, duration]);
+  return count;
+}
+
+function AnimatedStat({ value, label, suffix = '+' }: { value: number; label: string; suffix?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const count = useCountUp(value, visible);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.5 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <section id="about" className="py-20 px-4">
+    <div ref={ref} className="text-center">
+      <div className="text-3xl font-display font-bold text-primary tabular-nums">
+        {count}{suffix}
+      </div>
+      <div className="text-xs text-muted-foreground mt-1">{label}</div>
+    </div>
+  );
+}
+
+const About = () => {
+  return (
+    <section id="about" className="py-24 px-4">
       <div className="container mx-auto max-w-6xl">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">
+          <h2 className="text-4xl md:text-5xl font-display font-bold gradient-text mb-5">
             About Me
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            I'm a passionate full-stack developer who bridges the gap between beautiful interfaces 
-            and intelligent backends, creating experiences that don't just work—they think.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            I'm a self-taught full-stack developer and biomedical sciences student from Kigali, Rwanda.
+            I build end-to-end products — marketplaces, clinical AI, SaaS — alone, from scratch, at sprint pace.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Story */}
+        <div className="grid lg:grid-cols-2 gap-14 items-start mb-16">
+          {/* Career timeline */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -32 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             viewport={{ once: true }}
           >
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Brain className="h-8 w-8 text-primary" />
-                <h3 className="text-2xl font-bold">My Journey</h3>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                Started as a curious kid who wondered how websites worked. Fast-forward through 
-                computer science, countless late-night coding sessions, and an obsession with 
-                making the web more intelligent.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Today, I blend traditional web development with machine learning to create 
-                applications that adapt, learn, and provide personalized experiences. From 
-                recommendation engines to intelligent chatbots, I love building things that 
-                make users go "wow, how did it know that?"
-              </p>
+            <h3 className="text-xl font-display font-semibold mb-7">Career Path</h3>
+            <div className="relative space-y-0">
+              {/* Vertical line */}
+              <div className="absolute left-5 top-5 bottom-5 w-px bg-border" aria-hidden="true" />
+
+              {TIMELINE.map((item, i) => (
+                <motion.div
+                  key={item.period}
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.15, duration: 0.5 }}
+                  viewport={{ once: true }}
+                  className="relative flex gap-5 pb-9 last:pb-0"
+                >
+                  {/* Icon node */}
+                  <div className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-card border border-primary/30 flex items-center justify-center shadow-card">
+                    <item.icon className="h-4 w-4 text-primary" />
+                  </div>
+
+                  <div className="pt-1">
+                    <time className="text-xs font-mono text-muted-foreground">{item.period}</time>
+                    <h4 className="font-semibold text-sm mt-0.5">{item.role}</h4>
+                    <p className="text-xs text-muted-foreground">{item.context}</p>
+                    <p className="text-sm text-muted-foreground/80 mt-2 leading-relaxed">{item.achievement}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Stats */}
+          {/* Right column: stats + badges */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 32 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 gap-4"
+            className="space-y-8"
           >
-            {stats.map((stat, index) => (
-              <Card key={stat.label} className="bg-gradient-card border-border/50 hover-lift">
-                <CardContent className="p-6 text-center">
-                  <stat.icon className="h-8 w-8 text-primary mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-primary mb-2">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </CardContent>
-              </Card>
+            {/* Quick stats */}
+            <Card className="bg-gradient-card border-border/50">
+              <CardContent className="p-6 grid grid-cols-3 gap-4 divide-x divide-border/40">
+                <AnimatedStat value={3}  label="Years building"   />
+                <AnimatedStat value={10} label="Projects shipped" />
+                <AnimatedStat value={5}  label="Active projects"  />
+              </CardContent>
+            </Card>
+
+            {/* Badge groups */}
+            {BADGE_GROUPS.map(group => (
+              <div key={group.label}>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                  <Wrench className="h-3 w-3" /> {group.label}
+                </p>
+                <motion.div
+                  variants={badgeContainerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="flex flex-wrap gap-2"
+                >
+                  {group.items.map(item => (
+                    <motion.div key={item} variants={badgeItemVariants}>
+                      <Badge variant="secondary" className="bg-muted/20 text-foreground border-border/40 text-xs">
+                        {item}
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             ))}
           </motion.div>
         </div>
 
-        {/* Skills Grid */}
+        {/* Philosophy quote — authentic */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {skills.map((skillGroup, index) => (
-            <Card key={skillGroup.category} className="bg-gradient-card border-border/50 hover-lift">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-semibold mb-4 text-center">{skillGroup.category}</h4>
-                <div className="flex flex-wrap gap-2">
-                  {skillGroup.items.map((skill) => (
-                    <Badge 
-                      key={skill} 
-                      variant="secondary" 
-                      className="bg-muted/20 text-foreground border-border/50"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </motion.div>
-
-        {/* Philosophy */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <Card className="bg-gradient-card border-border/50 p-8 max-w-4xl mx-auto">
-            <CardContent className="p-0">
-              <blockquote className="text-xl italic text-muted-foreground leading-relaxed">
-                "The best technology is invisible—it just works, understands you, 
-                and makes your life better without you having to think about it."
+          <Card className="bg-gradient-card border-primary/20 max-w-3xl mx-auto">
+            <CardContent className="p-8 text-center">
+              <blockquote className="text-lg italic text-muted-foreground leading-relaxed">
+                "I grew up in Rwanda, where access to quality tech infrastructure is a daily constraint.
+                That taught me to build lean, ship fast, and make things that work even in the hardest conditions."
               </blockquote>
-              <div className="text-sm text-primary mt-4">— My Development Philosophy</div>
+              <p className="text-sm text-primary mt-4 font-medium">— Enock Uwumukiza</p>
             </CardContent>
           </Card>
         </motion.div>
