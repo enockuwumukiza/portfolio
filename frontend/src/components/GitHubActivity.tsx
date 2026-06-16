@@ -90,7 +90,9 @@ export default function GitHubActivity() {
         let cursor = new Date();
         while (activeDates.has(cursor.toISOString().slice(0, 10))) {
           s++;
-          cursor.setDate(cursor.getDate() - 1);
+          const next = new Date(cursor);
+          next.setDate(next.getDate() - 1);
+          cursor = next;
         }
         setStreak(s);
       } catch {

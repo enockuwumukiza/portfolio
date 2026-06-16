@@ -30,7 +30,7 @@ export default function CurrentlyBuilding() {
 
   const dismiss = () => {
     setDismissed(true);
-    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch {}
+    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (_) { /* storage unavailable */ }
   };
 
   const build = BUILDS[buildIdx];
