@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ExternalLink, Github, Brain, Zap, Globe, Layers, Smartphone, RefreshCw } from 'lucide-react';
 import { track } from '@/lib/analytics';
-import wardrobeImage from '../../public/images/wardrobe.jpeg';
-import chatImage from '../../public/images/chat.png';
-import resumeImage from '../../public/images/resume.jpeg';
+import wardrobeImage from '../../public/images/wardrobe.webp';
+import chatImage from '../../public/images/chat.webp';
+import resumeImage from '../../public/images/resume.webp';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
 
@@ -192,7 +192,10 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
             <img
               src={project.resolvedImage}
               alt={`Screenshot of ${project.title}`}
+              width={600}
+              height={400}
               loading="eager"
+              decoding="async"
               onLoad={() => setImageLoaded(true)}
               className={`object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             />
@@ -314,7 +317,10 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
             <img
               src={project.resolvedImage}
               alt={`Screenshot of ${project.title}`}
+              width={400}
+              height={225}
               loading="lazy"
+              decoding="async"
               onLoad={() => setImageLoaded(true)}
               className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             />

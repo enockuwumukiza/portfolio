@@ -1,21 +1,31 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { HelmetProvider } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
-import About from '@/components/About';
-import Projects from '@/components/Projects';
-import Skills from '@/components/Skills';
-import Experience from '@/components/Experience';
-import Contact from '@/components/Contact';
-import Footer from '@/components/Footer';
 import LoadingScreen from '@/components/LoadingScreen';
 import CustomCursor from '@/components/CustomCursor';
 import SEO from '@/components/SEO';
 import CurrentlyBuilding from '@/components/CurrentlyBuilding';
-import TerminalEmulator from '@/components/TerminalEmulator';
 import { useLenis } from '@/hooks/useLenis';
 import { track } from '@/lib/analytics';
+
+// Below-the-fold — lazy loaded for faster FCP/LCP
+const About = lazy(() => import('@/components/About'));
+const Projects = lazy(() => import('@/components/Projects'));
+const Skills = lazy(() => import('@/components/Skills'));
+const Experience = lazy(() => import('@/components/Experience'));
+const Contact = lazy(() => import('@/components/Contact'));
+const Footer = lazy(() => import('@/components/Footer'));
+const TerminalEmulator = lazy(() => import('@/components/TerminalEmulator'));
+
+function SectionFallback() {
+  return (
+    <div className="w-full py-24 flex items-center justify-center" aria-hidden="true">
+      <span className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
 
 // Konami code: ↑↑↓↓←→←→BA
 const KONAMI = [
@@ -82,17 +92,19 @@ function PortfolioContent() {
       <Navigation />
       <main id="main-content">
         <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Experience />
-        <Contact />
+        <Suspense fallback={<SectionFallback />}><About /></Suspense>
+        <Suspense fallback={<SectionFallback />}><Projects /></Suspense>
+        <Suspense fallback={<SectionFallback />}><Skills /></Suspense>
+        <Suspense fallback={<SectionFallback />}><Experience /></Suspense>
+        <Suspense fallback={<SectionFallback />}><Contact /></Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}><Footer /></Suspense>
       {/* Terminal easter egg */}
       <AnimatePresence>
         {terminalOpen && (
-          <TerminalEmulator onClose={() => setTerminalOpen(false)} />
+          <Suspense fallback={null}>
+            <TerminalEmulator onClose={() => setTerminalOpen(false)} />
+          </Suspense>
         )}
       </AnimatePresence>
     </div>

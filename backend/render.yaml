@@ -1,0 +1,40 @@
+# Render.com deployment configuration
+# Docs: https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: portfolio-backend
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci && npx prisma generate && npm run build
+    startCommand: npx prisma migrate deploy && node dist/index.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: portfolio-db
+          property: connectionString
+      - key: RESEND_API_KEY
+        sync: false   # Set manually in Render dashboard
+      - key: FROM_EMAIL
+        value: onboarding@resend.dev
+      - key: TO_EMAIL
+        value: wwwenockuwumukiza@gmail.com
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false   # Set to your Vercel URL after first deploy
+
+databases:
+  - name: portfolio-db
+    databaseName: portfolio
+    plan: free
+    region: oregon

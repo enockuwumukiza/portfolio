@@ -1,13 +1,13 @@
-name: CI
+name: CI/CD
 
 on:
   push:
-    branches: [main, develop, feature/sprint-one-implementation]
+    branches: [main, develop, feature/sprint-five-implementation]
   pull_request:
     branches: [main]
 
 jobs:
-  # ── Frontend ──────────────────────────────────────────────────
+  # ── Frontend ─────────────────────────────────────────────────────────────────
   frontend:
     name: Frontend — Lint, Type-check & Build
     runs-on: ubuntu-latest
@@ -22,7 +22,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
-      - name: Install dependencies
+      - name: Install root deps
         run: npm ci
 
       - name: Lint
@@ -38,10 +38,12 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:4000/api' }}
+          VITE_SITE_URL: ${{ secrets.VITE_SITE_URL || 'https://enockuwumukiza.dev' }}
+          VITE_ENABLE_ANALYTICS: 'true'
 
-  # ── Backend ───────────────────────────────────────────────────
+  # ── Backend ───────────────────────────────────────────────────────────────────
   backend:
-    name: Backend — Lint, Type-check & Build
+    name: Backend — Type-check & Build
     runs-on: ubuntu-latest
 
     steps:
@@ -54,8 +56,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
-      - name: Install dependencies
+      - name: Install root deps
         run: npm ci
+
+      - name: Generate Prisma client
+        working-directory: backend
+        run: npx prisma generate
 
       - name: Type-check
         working-directory: backend
@@ -64,3 +70,44 @@ jobs:
       - name: Build
         working-directory: backend
         run: npm run build
+
+  # ── Deploy Frontend → Vercel ──────────────────────────────────────────────────
+  # Runs only on push to main (not on PRs)
+  deploy-frontend:
+    name: Deploy Frontend → Vercel
+    needs: [frontend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: frontend
+          vercel-args: '--prod'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  # ── Deploy Backend → Render ───────────────────────────────────────────────────
+  # Trigger Render deploy hook on push to main
+  deploy-backend:
+    name: Deploy Backend → Render
+    needs: [backend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            --max-time 30 \
+            --retry 2 \
+            --retry-delay 5
+        # Note: Set RENDER_DEPLOY_HOOK_URL in GitHub repo secrets
+        # Get it from: Render Dashboard > Service > Settings > Deploy Hook
