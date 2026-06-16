@@ -2,14 +2,16 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Download, Terminal, Sun, Moon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import TerminalEmulator from './TerminalEmulator';
 
 const NAV_ITEMS = [
-  { name: 'About',      href: '#about'      },
-  { name: 'Projects',   href: '#projects'   },
-  { name: 'Skills',     href: '#skills'     },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Contact',    href: '#contact'    },
+  { name: 'About',      href: '#about',      external: false },
+  { name: 'Projects',   href: '#projects',   external: false },
+  { name: 'Skills',     href: '#skills',     external: false },
+  { name: 'Experience', href: '#experience', external: false },
+  { name: 'Blog',       href: '/blog',       external: true  },
+  { name: 'Contact',    href: '#contact',    external: false },
 ];
 
 const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'experience', 'contact'];
@@ -167,22 +169,13 @@ const Navigation = () => {
               {NAV_ITEMS.map(item => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
-                return (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={e => { e.preventDefault(); handleNavClick(item.href); }}
-                    role="listitem"
-                    className="relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-                    style={{
-                      color: isActive
-                        ? 'hsl(var(--primary))'
-                        : 'hsl(var(--muted-foreground))',
-                    }}
-                    aria-current={isActive ? 'page' : undefined}
-                  >
+                const sharedClass = `relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary`;
+                const colorStyle = {
+                  color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
+                };
+                const inner = (
+                  <>
                     {item.name}
-                    {/* Animated underline — Framer Motion shared layoutId */}
                     {isActive && (
                       <motion.span
                         layoutId="nav-active-underline"
@@ -191,11 +184,36 @@ const Navigation = () => {
                         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                       />
                     )}
-                    {/* Hover pill background */}
                     <motion.span
                       className="absolute inset-0 rounded-md bg-primary/0 hover:bg-primary/6 transition-colors duration-200 -z-10"
                       aria-hidden="true"
                     />
+                  </>
+                );
+                if (item.external) {
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      role="listitem"
+                      className={sharedClass}
+                      style={colorStyle}
+                    >
+                      {inner}
+                    </Link>
+                  );
+                }
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={e => { e.preventDefault(); handleNavClick(item.href); }}
+                    role="listitem"
+                    className={sharedClass}
+                    style={colorStyle}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    {inner}
                   </a>
                 );
               })}
@@ -327,27 +345,50 @@ const Navigation = () => {
               {NAV_ITEMS.map((item, i) => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
+                const sharedClass = `w-full text-center py-4 text-3xl font-display font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-lg ${
+                  isActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                }`;
+                const inner = (
+                  <span className="relative">
+                    {item.name}
+                    {isActive && (
+                      <motion.span
+                        layoutId="mobile-active-indicator"
+                        className="absolute -right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary"
+                      />
+                    )}
+                  </span>
+                );
+                if (item.external) {
+                  return (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.06 * i + 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                      className="w-full"
+                    >
+                      <Link
+                        to={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className={sharedClass}
+                      >
+                        {inner}
+                      </Link>
+                    </motion.div>
+                  );
+                }
                 return (
                   <motion.a
                     key={item.name}
                     href={item.href}
                     onClick={e => { e.preventDefault(); handleNavClick(item.href); }}
-                    className={`w-full text-center py-4 text-3xl font-display font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-lg ${
-                      isActive ? 'text-primary' : 'text-foreground hover:text-primary'
-                    }`}
+                    className={sharedClass}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.06 * i + 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <span className="relative">
-                      {item.name}
-                      {isActive && (
-                        <motion.span
-                          layoutId="mobile-active-indicator"
-                          className="absolute -right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary"
-                        />
-                      )}
-                    </span>
+                    {inner}
                   </motion.a>
                 );
               })}

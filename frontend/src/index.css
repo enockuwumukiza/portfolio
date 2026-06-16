@@ -374,3 +374,42 @@ body, nav, footer, header, section, article, aside, main {
 html {
   scroll-padding-top: 80px;
 }
+
+/* ── Blog / Prose styles ──────────────────────────────── */
+.prose-custom {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Code blocks in blog posts */
+.prose-custom pre {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  background: hsl(30 40% 3%) !important;
+}
+
+/* Inline code */
+.prose-custom code:not(pre code) {
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 0.3em;
+  background: hsl(var(--muted) / 0.6);
+  color: hsl(var(--primary));
+  border: 1px solid hsl(var(--border) / 0.4);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Blog card line clamp */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Blog tag pill hover */
+.blog-tag:hover {
+  border-color: hsl(var(--primary) / 0.4);
+  color: hsl(var(--primary));
+}

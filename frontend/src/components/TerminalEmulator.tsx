@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { X, Terminal, Minus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface TerminalLine {
   id: number;
@@ -32,6 +33,7 @@ const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine[
       { type: 'output', text: '  projects      — All projects with GitHub links' },
       { type: 'output', text: '  contact        — Email & social channels' },
       { type: 'output', text: '  blog           — Recent writing topics' },
+      { type: 'output', text: '  open blog      — Navigate to /blog' },
       { type: 'output', text: '  sudo hire enock — Make an important decision 😄' },
       { type: 'output', text: '  clear           — Clear terminal' },
       { type: 'output', text: '  exit / q        — Close terminal' },
@@ -119,13 +121,16 @@ const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine[
   blog: () => ({
     lines: [
       { type: 'output', text: '' },
-      { type: 'success', text: 'WRITING (COMING SOON)' },
+      { type: 'success', text: 'WRITING — live at /blog' },
       { type: 'output', text: '──────────────────────────────────────' },
-      { type: 'output', text: '  → "Building a Service Marketplace for Rwanda: What I Learned"' },
-      { type: 'output', text: '  → "End-to-End Voice Messaging in React Native: Sprint 7 Debrief"' },
       { type: 'output', text: '  → "Why I Chose FastAPI Over Node.js for HandyRwanda\'s Backend"' },
+      { type: 'output', text: '     /blog/fastapi-vs-nodejs  ·  7 min  ·  Apr 2026' },
       { type: 'output', text: '' },
-      { type: 'output', text: '  Blog launching Q3 2025 — watch this space.' },
+      { type: 'output', text: '  → "End-to-End Voice Messaging in React Native: Sprint 7 Debrief"' },
+      { type: 'output', text: '     /blog/voice-messaging-react-native  ·  10 min  ·  Feb 2026' },
+      { type: 'output', text: '' },
+      { type: 'output', text: '  → "Building a Service Marketplace for Rwanda: What I Learned"' },
+      { type: 'output', text: '     /blog/building-handyrwanda  ·  8 min  ·  Dec 2025' },
       { type: 'output', text: '' },
     ],
   }),
@@ -156,6 +161,7 @@ function fireConfetti() {
 }
 
 const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
+  const navigate = useNavigate();
   const [lines, setLines] = useState<TerminalLine[]>([
     { id: lineId++, type: 'output', text: '╔══════════════════════════════════════╗' },
     { id: lineId++, type: 'output', text: '║  DevTerminal v3.0 — Enock Uwumukiza  ║' },
@@ -228,6 +234,13 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
     if (goTo && !COMMANDS[lower]) {
       addLines([{ type: 'output', text: `Navigating to ${lower}…` }]);
       setTimeout(() => document.querySelector(goTo)?.scrollIntoView({ behavior: 'smooth' }), 300);
+      return;
+    }
+
+    // Navigate to blog
+    if (lower === 'open blog' || lower === 'goto blog' || lower === 'go blog' || lower === 'navigate blog') {
+      addLines([{ type: 'output', text: 'Opening blog…' }]);
+      setTimeout(() => { onClose(); navigate('/blog'); }, 400);
       return;
     }
 
