@@ -107,7 +107,7 @@ export const projects: Project[] = [
       'Alembic database migrations',
     ],
     problem:
-      'Rwanda's informal artisan economy lacks a trusted digital platform for clients to discover, hire, and pay skilled workers.',
+      "Rwanda's informal artisan economy lacks a trusted digital platform for clients to discover, hire, and pay skilled workers.",
     solution:
       'Built a three-layer platform (API + web + mobile) with Rwanda-specific UX including local address hierarchy, WhatsApp-style voice messages, and mobile-first design.',
     outcome: 'Active development under EnochLabs. Sprint 7 shipped voice messaging end-to-end.',

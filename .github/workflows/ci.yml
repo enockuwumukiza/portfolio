@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, feature/sprint-one-implementation]
   pull_request:
     branches: [main]
 
@@ -11,9 +11,6 @@ jobs:
   frontend:
     name: Frontend — Lint, Type-check & Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -23,18 +20,21 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Lint
+        working-directory: frontend
         run: npm run lint
 
       - name: Type-check
+        working-directory: frontend
         run: npx tsc --noEmit
 
       - name: Build
+        working-directory: frontend
         run: npm run build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:4000/api' }}
@@ -43,9 +43,6 @@ jobs:
   backend:
     name: Backend — Lint, Type-check & Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
 
     steps:
       - uses: actions/checkout@v4
@@ -55,13 +52,15 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Type-check
+        working-directory: backend
         run: npx tsc --noEmit
 
       - name: Build
+        working-directory: backend
         run: npm run build
