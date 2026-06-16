@@ -22,7 +22,10 @@ const ASCII_BANNER = [
   ' Kigali, Rwanda 🇷🇼 → building for the world',
 ];
 
-const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine['type']; text: string }[]; scroll?: string }> = {
+const COMMANDS: Record<
+  string,
+  (args?: string) => { lines: { type: TerminalLine['type']; text: string }[]; scroll?: string }
+> = {
   help: () => ({
     lines: [
       { type: 'output', text: '' },
@@ -46,9 +49,9 @@ const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine[
   whoami: () => ({
     lines: [
       { type: 'output', text: '' },
-      ...ASCII_BANNER.map(t => ({ type: 'ascii' as const, text: t })),
+      ...ASCII_BANNER.map((t) => ({ type: 'ascii' as const, text: t })),
       { type: 'output', text: '' },
-      { type: 'output', text: '  I\'m a self-taught developer who went from studying' },
+      { type: 'output', text: "  I'm a self-taught developer who went from studying" },
       { type: 'output', text: '  biomedical sciences at INES Ruhengeri to building' },
       { type: 'output', text: '  full-stack products, ML systems, and React Native apps.' },
       { type: 'output', text: '' },
@@ -64,7 +67,10 @@ const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine[
       { type: 'output', text: '' },
       { type: 'success', text: 'TECH STACK' },
       { type: 'output', text: '──────────────────────────────────────' },
-      { type: 'output', text: '  Frontend   React · TypeScript · Next.js · Tailwind · Framer Motion' },
+      {
+        type: 'output',
+        text: '  Frontend   React · TypeScript · Next.js · Tailwind · Framer Motion',
+      },
       { type: 'output', text: '  Backend    FastAPI · Node.js/Express · Socket.IO · Prisma' },
       { type: 'output', text: '  Mobile     React Native (Expo) · NativeWind · WebRTC' },
       { type: 'output', text: '  Database   PostgreSQL · MongoDB · Redis · MySQL' },
@@ -81,19 +87,34 @@ const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine[
       { type: 'output', text: '' },
       { type: 'success', text: 'PROJECTS' },
       { type: 'output', text: '──────────────────────────────────────' },
-      { type: 'output', text: '  [★] HandyRwanda     — Rwanda service marketplace (MTN MoMo, Socket.IO, Expo)' },
+      {
+        type: 'output',
+        text: '  [★] HandyRwanda     — Rwanda service marketplace (MTN MoMo, Socket.IO, Expo)',
+      },
       { type: 'output', text: '       github.com/Enochrwa/HandyRwanda' },
       { type: 'output', text: '' },
-      { type: 'output', text: '  [★] INZIRA EDRPS    — Clinical AI for 5 disease modules (XGBoost, SHAP)' },
+      {
+        type: 'output',
+        text: '  [★] INZIRA EDRPS    — Clinical AI for 5 disease modules (XGBoost, SHAP)',
+      },
       { type: 'output', text: '       github.com/Enochrwa/inzira-edrps' },
       { type: 'output', text: '' },
-      { type: 'output', text: '  [ ] AI Wardrobe     — Outfit detection + recommendation (TensorFlow)' },
+      {
+        type: 'output',
+        text: '  [ ] AI Wardrobe     — Outfit detection + recommendation (TensorFlow)',
+      },
       { type: 'output', text: '       github.com/Enochrwa/myward' },
       { type: 'output', text: '' },
-      { type: 'output', text: '  [ ] Resume Builder  — Professional résumés with PDF export (live on Vercel)' },
+      {
+        type: 'output',
+        text: '  [ ] Resume Builder  — Professional résumés with PDF export (live on Vercel)',
+      },
       { type: 'output', text: '       resumeforge-five.vercel.app' },
       { type: 'output', text: '' },
-      { type: 'output', text: '  [ ] eChat           — Real-time team chat with WebRTC video/audio' },
+      {
+        type: 'output',
+        text: '  [ ] eChat           — Real-time team chat with WebRTC video/audio',
+      },
       { type: 'output', text: '       github.com/enockuwumukiza/e-chat' },
       { type: 'output', text: '' },
     ],
@@ -126,7 +147,10 @@ const COMMANDS: Record<string, (args?: string) => { lines: { type: TerminalLine[
       { type: 'output', text: '  → "Why I Chose FastAPI Over Node.js for HandyRwanda\'s Backend"' },
       { type: 'output', text: '     /blog/fastapi-vs-nodejs  ·  7 min  ·  Apr 2026' },
       { type: 'output', text: '' },
-      { type: 'output', text: '  → "End-to-End Voice Messaging in React Native: Sprint 7 Debrief"' },
+      {
+        type: 'output',
+        text: '  → "End-to-End Voice Messaging in React Native: Sprint 7 Debrief"',
+      },
       { type: 'output', text: '     /blog/voice-messaging-react-native  ·  10 min  ·  Feb 2026' },
       { type: 'output', text: '' },
       { type: 'output', text: '  → "Building a Service Marketplace for Rwanda: What I Learned"' },
@@ -184,83 +208,106 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
     }, 30);
   }, []);
 
-  const addLines = useCallback((newLines: { type: TerminalLine['type']; text: string }[]) => {
-    setLines(prev => [...prev, ...newLines.map(l => ({ ...l, id: lineId++ }))]);
-    scrollToBottom();
-  }, [scrollToBottom]);
+  const addLines = useCallback(
+    (newLines: { type: TerminalLine['type']; text: string }[]) => {
+      setLines((prev) => [...prev, ...newLines.map((l) => ({ ...l, id: lineId++ }))]);
+      scrollToBottom();
+    },
+    [scrollToBottom]
+  );
 
-  const handleCommand = useCallback((raw: string) => {
-    const trimmed = raw.trim();
-    if (!trimmed) return;
+  const handleCommand = useCallback(
+    (raw: string) => {
+      const trimmed = raw.trim();
+      if (!trimmed) return;
 
-    // Add input echo
-    addLines([{ type: 'input', text: `❯ ${trimmed}` }]);
+      // Add input echo
+      addLines([{ type: 'input', text: `❯ ${trimmed}` }]);
 
-    // History
-    setHistory(h => [trimmed, ...h].slice(0, 50));
-    setHistIdx(-1);
+      // History
+      setHistory((h) => [trimmed, ...h].slice(0, 50));
+      setHistIdx(-1);
 
-    const lower = trimmed.toLowerCase();
+      const lower = trimmed.toLowerCase();
 
-    if (lower === 'clear') {
-      setLines([]);
-      return;
-    }
-    if (lower === 'exit' || lower === 'q') {
-      onClose();
-      return;
-    }
-    if (lower === 'sudo hire enock') {
-      fireConfetti();
+      if (lower === 'clear') {
+        setLines([]);
+        return;
+      }
+      if (lower === 'exit' || lower === 'q') {
+        onClose();
+        return;
+      }
+      if (lower === 'sudo hire enock') {
+        fireConfetti();
+        addLines([
+          { type: 'output', text: '' },
+          { type: 'success', text: '🎉 EXCELLENT DECISION! 🎉' },
+          { type: 'output', text: '  Initiating onboarding sequence...' },
+          { type: 'output', text: '' },
+          { type: 'output', text: '  ✅ TypeScript proficiency: verified' },
+          { type: 'output', text: '  ✅ FastAPI backend: deployed' },
+          { type: 'output', text: '  ✅ Rwanda time zone: UTC+2, compatible' },
+          { type: 'output', text: '  ✅ Coffee dependency: Rwandan beans ✓' },
+          { type: 'output', text: '' },
+          { type: 'success', text: '  → Reach out at: wwwenockuwumukiza@gmail.com' },
+          { type: 'output', text: '' },
+        ]);
+        return;
+      }
+
+      // Scroll hint commands
+      const scrollMap: Record<string, string> = {
+        about: '#about',
+        projects: '#projects',
+        skills: '#skills',
+        contact: '#contact',
+        experience: '#experience',
+      };
+      const goTo = scrollMap[lower];
+      if (goTo && !COMMANDS[lower]) {
+        addLines([{ type: 'output', text: `Navigating to ${lower}…` }]);
+        setTimeout(() => document.querySelector(goTo)?.scrollIntoView({ behavior: 'smooth' }), 300);
+        return;
+      }
+
+      // Navigate to blog
+      if (
+        lower === 'open blog' ||
+        lower === 'goto blog' ||
+        lower === 'go blog' ||
+        lower === 'navigate blog'
+      ) {
+        addLines([{ type: 'output', text: 'Opening blog…' }]);
+        setTimeout(() => {
+          onClose();
+          navigate('/blog');
+        }, 400);
+        return;
+      }
+
+      const cmdFn = COMMANDS[lower];
+      if (cmdFn) {
+        const result = cmdFn();
+        addLines(result.lines);
+        if (result.scroll) {
+          setTimeout(
+            () => document.querySelector(result.scroll!)?.scrollIntoView({ behavior: 'smooth' }),
+            500
+          );
+        }
+        return;
+      }
+
+      // Unknown command
       addLines([
-        { type: 'output', text: '' },
-        { type: 'success', text: '🎉 EXCELLENT DECISION! 🎉' },
-        { type: 'output', text: '  Initiating onboarding sequence...' },
-        { type: 'output', text: '' },
-        { type: 'output', text: '  ✅ TypeScript proficiency: verified' },
-        { type: 'output', text: '  ✅ FastAPI backend: deployed' },
-        { type: 'output', text: '  ✅ Rwanda time zone: UTC+2, compatible' },
-        { type: 'output', text: '  ✅ Coffee dependency: Rwandan beans ✓' },
-        { type: 'output', text: '' },
-        { type: 'success', text: '  → Reach out at: wwwenockuwumukiza@gmail.com' },
+        { type: 'error', text: `Command not found: ${trimmed}` },
+        { type: 'output', text: 'Type "help" to see available commands.' },
         { type: 'output', text: '' },
       ]);
-      return;
-    }
-
-    // Scroll hint commands
-    const scrollMap: Record<string, string> = { about: '#about', projects: '#projects', skills: '#skills', contact: '#contact', experience: '#experience' };
-    const goTo = scrollMap[lower];
-    if (goTo && !COMMANDS[lower]) {
-      addLines([{ type: 'output', text: `Navigating to ${lower}…` }]);
-      setTimeout(() => document.querySelector(goTo)?.scrollIntoView({ behavior: 'smooth' }), 300);
-      return;
-    }
-
-    // Navigate to blog
-    if (lower === 'open blog' || lower === 'goto blog' || lower === 'go blog' || lower === 'navigate blog') {
-      addLines([{ type: 'output', text: 'Opening blog…' }]);
-      setTimeout(() => { onClose(); navigate('/blog'); }, 400);
-      return;
-    }
-
-    const cmdFn = COMMANDS[lower];
-    if (cmdFn) {
-      const result = cmdFn();
-      addLines(result.lines);
-      if (result.scroll) {
-        setTimeout(() => document.querySelector(result.scroll!)?.scrollIntoView({ behavior: 'smooth' }), 500);
-      }
-      return;
-    }
-
-    // Unknown command
-    addLines([
-      { type: 'error', text: `Command not found: ${trimmed}` },
-      { type: 'output', text: 'Type "help" to see available commands.' },
-      { type: 'output', text: '' },
-    ]);
-  }, [addLines, onClose]);
+    },
+    [addLines, onClose]
+  );
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -275,11 +322,11 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
       e.preventDefault();
       const newIdx = Math.max(histIdx - 1, -1);
       setHistIdx(newIdx);
-      setInput(newIdx === -1 ? '' : history[newIdx] ?? '');
+      setInput(newIdx === -1 ? '' : (history[newIdx] ?? ''));
     } else if (e.key === 'Tab') {
       e.preventDefault();
       const partial = input.toLowerCase();
-      const match = Object.keys(COMMANDS).find(k => k.startsWith(partial));
+      const match = Object.keys(COMMANDS).find((k) => k.startsWith(partial));
       if (match) setInput(match);
     } else if (e.key === 'Escape') {
       onClose();
@@ -287,14 +334,16 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
   };
 
   // Focus input on mount
-  useEffect(() => { inputRef.current?.focus(); }, []);
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const lineClass: Record<TerminalLine['type'], string> = {
-    input:   'text-primary font-semibold',
-    output:  'text-muted-foreground',
-    error:   'text-red-400',
+    input: 'text-primary font-semibold',
+    output: 'text-muted-foreground',
+    error: 'text-red-400',
     success: 'text-green-400 font-semibold',
-    ascii:   'text-primary/80 font-mono text-xs',
+    ascii: 'text-primary/80 font-mono text-xs',
   };
 
   return (
@@ -303,7 +352,9 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <motion.div
         drag
@@ -315,8 +366,12 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         className="w-full max-w-2xl bg-card border border-border/60 rounded-xl shadow-2xl overflow-hidden select-none"
         style={{ cursor: 'grab' }}
-        onPointerDown={() => { document.body.style.cursor = 'grabbing'; }}
-        onPointerUp={() => { document.body.style.cursor = ''; }}
+        onPointerDown={() => {
+          document.body.style.cursor = 'grabbing';
+        }}
+        onPointerUp={() => {
+          document.body.style.cursor = '';
+        }}
       >
         {/* Title bar */}
         <div className="flex items-center justify-between px-4 py-3 bg-muted/40 border-b border-border/50 drag-handle">
@@ -327,7 +382,7 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
           <div className="flex items-center gap-2">
             <button
               className="p-1 rounded hover:bg-muted/60 text-muted-foreground hover:text-yellow-400 transition-colors"
-              onClick={() => setMinimized(m => !m)}
+              onClick={() => setMinimized((m) => !m)}
               aria-label="Minimize"
             >
               <Minus className="h-3.5 w-3.5" />
@@ -351,7 +406,7 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
               style={{ scrollbarWidth: 'thin' }}
               onClick={() => inputRef.current?.focus()}
             >
-              {lines.map(line => (
+              {lines.map((line) => (
                 <div key={line.id} className={lineClass[line.type]}>
                   {line.text || '\u00A0'}
                 </div>
@@ -364,7 +419,7 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
                 ref={inputRef}
                 type="text"
                 value={input}
-                onChange={e => setInput(e.target.value)}
+                onChange={(e) => setInput(e.target.value)}
                 onKeyDown={onKeyDown}
                 className="flex-1 bg-transparent text-xs font-mono text-foreground outline-none placeholder:text-muted-foreground/40 caret-primary"
                 placeholder="type a command…"
@@ -372,7 +427,10 @@ const TerminalEmulator = ({ onClose }: { onClose: () => void }) => {
                 spellCheck={false}
                 aria-label="Terminal input"
               />
-              <span className="w-2 h-4 bg-primary animate-pulse rounded-sm flex-shrink-0" aria-hidden="true" />
+              <span
+                className="w-2 h-4 bg-primary animate-pulse rounded-sm flex-shrink-0"
+                aria-hidden="true"
+              />
             </div>
           </>
         )}

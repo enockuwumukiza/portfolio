@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 const TerminalEmulator = lazy(() => import('./TerminalEmulator'));
 
 const NAV_ITEMS = [
-  { name: 'About',      href: '#about',      external: false },
-  { name: 'Projects',   href: '#projects',   external: false },
-  { name: 'Skills',     href: '#skills',     external: false },
+  { name: 'About', href: '#about', external: false },
+  { name: 'Projects', href: '#projects', external: false },
+  { name: 'Skills', href: '#skills', external: false },
   { name: 'Experience', href: '#experience', external: false },
-  { name: 'Blog',       href: '/blog',       external: true  },
-  { name: 'Contact',    href: '#contact',    external: false },
+  { name: 'Blog', href: '/blog', external: true },
+  { name: 'Contact', href: '#contact', external: false },
 ];
 
 const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'experience', 'contact'];
@@ -38,7 +38,7 @@ function useTheme() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggle = useCallback(() => setTheme(t => (t === 'dark' ? 'light' : 'dark')), []);
+  const toggle = useCallback(() => setTheme((t) => (t === 'dark' ? 'light' : 'dark')), []);
   return { theme, toggle };
 }
 
@@ -50,7 +50,7 @@ function useActiveSection() {
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
 
-    SECTION_IDS.forEach(id => {
+    SECTION_IDS.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
       const obs = new IntersectionObserver(
@@ -63,7 +63,10 @@ function useActiveSection() {
           let best = 'hero';
           let bestRatio = 0;
           ratioMap.current.forEach((ratio, sid) => {
-            if (ratio > bestRatio) { bestRatio = ratio; best = sid; }
+            if (ratio > bestRatio) {
+              bestRatio = ratio;
+              best = sid;
+            }
           });
           setActiveSection(best);
         },
@@ -73,7 +76,7 @@ function useActiveSection() {
       observers.push(obs);
     });
 
-    return () => observers.forEach(o => o.disconnect());
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   return activeSection;
@@ -98,7 +101,9 @@ const Navigation = () => {
 
   // Close on ESC
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsMobileOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileOpen(false);
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
@@ -106,16 +111,24 @@ const Navigation = () => {
   // Lock body scroll when open
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isMobileOpen]);
 
-  const handleNavClick = useCallback((href: string) => {
-    setIsMobileOpen(false);
-    const id = href.replace('#', '');
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }, isMobileOpen ? 350 : 0);
-  }, [isMobileOpen]);
+  const handleNavClick = useCallback(
+    (href: string) => {
+      setIsMobileOpen(false);
+      const id = href.replace('#', '');
+      setTimeout(
+        () => {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        },
+        isMobileOpen ? 350 : 0
+      );
+    },
+    [isMobileOpen]
+  );
 
   // Swipe-down or swipe-left to close mobile menu
   const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -148,11 +161,13 @@ const Navigation = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-[64px]">
-
             {/* ── Logo ── */}
             <motion.a
               href="#hero"
-              onClick={e => { e.preventDefault(); handleNavClick('#hero'); }}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('#hero');
+              }}
               className="text-xl font-display font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded select-none"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
@@ -170,11 +185,13 @@ const Navigation = () => {
 
             {/* ── Desktop nav ── */}
             <div className="hidden md:flex items-center gap-1" role="list">
-              {NAV_ITEMS.map(item => {
+              {NAV_ITEMS.map((item) => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
                 const sharedClass = `relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary`;
-                const colorStyle = { color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))' };
+                const colorStyle = {
+                  color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
+                };
                 const inner = (
                   <>
                     {item.name}
@@ -190,7 +207,13 @@ const Navigation = () => {
                 );
                 if (item.external) {
                   return (
-                    <Link key={item.name} to={item.href} role="listitem" className={sharedClass} style={colorStyle}>
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      role="listitem"
+                      className={sharedClass}
+                      style={colorStyle}
+                    >
                       {inner}
                     </Link>
                   );
@@ -199,7 +222,10 @@ const Navigation = () => {
                   <a
                     key={item.name}
                     href={item.href}
-                    onClick={e => { e.preventDefault(); handleNavClick(item.href); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }}
                     role="listitem"
                     className={sharedClass}
                     style={colorStyle}
@@ -241,7 +267,11 @@ const Navigation = () => {
                 <span className="hidden lg:inline">_terminal</span>
               </Button>
 
-              <a href="/Enock_Resume.pdf" download="Enock_Uwumukiza_Resume.pdf" aria-label="Download Enock's resume PDF">
+              <a
+                href="/Enock_Resume.pdf"
+                download="Enock_Uwumukiza_Resume.pdf"
+                aria-label="Download Enock's resume PDF"
+              >
                 <Button
                   size="sm"
                   className="ml-1 bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-full font-medium"
@@ -266,7 +296,7 @@ const Navigation = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsMobileOpen(v => !v)}
+                onClick={() => setIsMobileOpen((v) => !v)}
                 aria-label={isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={isMobileOpen}
                 aria-controls="mobile-nav"
@@ -274,18 +304,29 @@ const Navigation = () => {
               >
                 <AnimatePresence mode="wait" initial={false}>
                   {isMobileOpen ? (
-                    <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       <X className="h-6 w-6" />
                     </motion.div>
                   ) : (
-                    <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       <Menu className="h-6 w-6" />
                     </motion.div>
                   )}
                 </AnimatePresence>
               </Button>
             </div>
-
           </div>
         </div>
       </motion.nav>
@@ -319,7 +360,10 @@ const Navigation = () => {
             {/* Amber blob */}
             <div
               className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full pointer-events-none"
-              style={{ background: 'radial-gradient(circle, hsl(37 91% 55% / 0.08) 0%, transparent 70%)', filter: 'blur(40px)' }}
+              style={{
+                background: 'radial-gradient(circle, hsl(37 91% 55% / 0.08) 0%, transparent 70%)',
+                filter: 'blur(40px)',
+              }}
               aria-hidden="true"
             />
 
@@ -347,10 +391,20 @@ const Navigation = () => {
                       key={item.name}
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.06 * i + 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{
+                        delay: 0.06 * i + 0.1,
+                        duration: 0.45,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
                       className="w-full"
                     >
-                      <Link to={item.href} onClick={() => setIsMobileOpen(false)} className={sharedClass}>{inner}</Link>
+                      <Link
+                        to={item.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={sharedClass}
+                      >
+                        {inner}
+                      </Link>
                     </motion.div>
                   );
                 }
@@ -358,7 +412,10 @@ const Navigation = () => {
                   <motion.a
                     key={item.name}
                     href={item.href}
-                    onClick={e => { e.preventDefault(); handleNavClick(item.href); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }}
                     className={sharedClass}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -376,7 +433,10 @@ const Navigation = () => {
                 className="flex gap-3 mt-8 pt-6 border-t border-border/30 w-full justify-center"
               >
                 <a href="/Enock_Resume.pdf" download="Enock_Uwumukiza_Resume.pdf">
-                  <Button size="sm" className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground rounded-full">
+                  <Button
+                    size="sm"
+                    className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
+                  >
                     <Download className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
                     Resume
                   </Button>
@@ -384,7 +444,10 @@ const Navigation = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => { setIsMobileOpen(false); setTimeout(() => setShowTerminal(true), 350); }}
+                  onClick={() => {
+                    setIsMobileOpen(false);
+                    setTimeout(() => setShowTerminal(true), 350);
+                  }}
                   className="text-muted-foreground hover:text-primary rounded-full"
                 >
                   <Terminal className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />

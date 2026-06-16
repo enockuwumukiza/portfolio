@@ -65,7 +65,20 @@ const LEVEL_CLASS: Record<number, string> = {
 };
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_LABELS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 function getMonthHeaders(cells: DayCell[]) {
   const headers: { month: string; colIndex: number }[] = [];
@@ -112,7 +125,9 @@ export default function GitHubActivity() {
         }
 
         if (!fetchedOk) {
-          const ghRes = await fetch('https://api.github.com/users/enockuwumukiza/events?per_page=100');
+          const ghRes = await fetch(
+            'https://api.github.com/users/enockuwumukiza/events?per_page=100'
+          );
           if (ghRes.ok) {
             events = await ghRes.json();
             fetchedOk = true;
@@ -149,7 +164,9 @@ export default function GitHubActivity() {
     }
 
     fetchEvents();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const weeks: DayCell[][] = [];
@@ -190,13 +207,19 @@ export default function GitHubActivity() {
                   </span>
                 )}
                 {streak > 0 && (
-                  <Badge variant="outline" className="text-xs gap-1 border-orange-500/30 text-orange-400 bg-orange-500/5 font-normal">
+                  <Badge
+                    variant="outline"
+                    className="text-xs gap-1 border-orange-500/30 text-orange-400 bg-orange-500/5 font-normal"
+                  >
                     <Flame className="h-3 w-3" />
                     {streak}d streak
                   </Badge>
                 )}
                 {isFallback && (
-                  <Badge variant="outline" className="text-xs border-border/40 text-muted-foreground/50 font-normal">
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-border/40 text-muted-foreground/50 font-normal"
+                  >
                     estimated
                   </Badge>
                 )}
@@ -218,7 +241,10 @@ export default function GitHubActivity() {
                   {Array.from({ length: WEEKS }).map((_, i) => {
                     const header = monthHeaders.find((h) => h.colIndex === i);
                     return (
-                      <div key={i} className="flex-1 min-w-[14px] text-[9px] text-muted-foreground/50">
+                      <div
+                        key={i}
+                        className="flex-1 min-w-[14px] text-[9px] text-muted-foreground/50"
+                      >
                         {header ? header.month : ''}
                       </div>
                     );
@@ -264,7 +290,11 @@ export default function GitHubActivity() {
                 <div className="flex items-center gap-2 mt-3 justify-end">
                   <span className="text-[9px] text-muted-foreground/40">Less</span>
                   {([0, 1, 2, 3, 4] as const).map((l) => (
-                    <div key={l} className={`w-[10px] h-[10px] rounded-[2px] border ${LEVEL_CLASS[l]}`} aria-hidden="true" />
+                    <div
+                      key={l}
+                      className={`w-[10px] h-[10px] rounded-[2px] border ${LEVEL_CLASS[l]}`}
+                      aria-hidden="true"
+                    />
                   ))}
                   <span className="text-[9px] text-muted-foreground/40">More</span>
                 </div>

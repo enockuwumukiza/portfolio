@@ -2,11 +2,23 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Award, BookOpen, ChevronDown, Github, ExternalLink, Microscope, Cpu, Globe } from 'lucide-react';
+import {
+  Calendar,
+  MapPin,
+  Award,
+  BookOpen,
+  ChevronDown,
+  Github,
+  ExternalLink,
+  Microscope,
+  Cpu,
+  Globe,
+} from 'lucide-react';
 
 /* ── Icon components representing each role ── */
 function RoleIcon({ type }: { type: 'freelance' | 'research' | 'open-source' | 'education' }) {
-  const base = 'flex items-center justify-center w-12 h-12 rounded-xl border flex-shrink-0 shadow-card';
+  const base =
+    'flex items-center justify-center w-12 h-12 rounded-xl border flex-shrink-0 shadow-card';
   if (type === 'freelance')
     return (
       <div className={`${base} bg-primary/10 border-primary/30`}>
@@ -76,7 +88,16 @@ const EXPERIENCES = [
       'Streamlit batch prediction interface for clinicians; targeting Lancet Digital Health publication',
       'DHIS2 and RHIE integration design for national deployment',
     ],
-    tech: ['Python', 'XGBoost', 'LightGBM', 'scikit-learn', 'SHAP', 'FastAPI', 'Streamlit', 'Pandas'],
+    tech: [
+      'Python',
+      'XGBoost',
+      'LightGBM',
+      'scikit-learn',
+      'SHAP',
+      'FastAPI',
+      'Streamlit',
+      'Pandas',
+    ],
     links: [
       { label: 'INZIRA EDRPS', href: 'https://github.com/Enochrwa/inzira-edrps', icon: Github },
     ],
@@ -120,7 +141,7 @@ const EDUCATION = [
   },
 ];
 
-function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
+function ExperienceCard({ exp }: { exp: (typeof EXPERIENCES)[0] }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -148,7 +169,10 @@ function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
               <h4 className="text-base font-bold text-primary">{exp.title}</h4>
               <p className="text-sm font-semibold text-foreground">{exp.company}</p>
             </div>
-            <Badge variant="outline" className="border-primary/40 text-primary text-xs flex-shrink-0">
+            <Badge
+              variant="outline"
+              className="border-primary/40 text-primary text-xs flex-shrink-0"
+            >
               {exp.type}
             </Badge>
           </div>
@@ -156,10 +180,12 @@ function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-4">
             <span className="flex items-center gap-1">
-              <Calendar className="h-3.5 w-3.5" />{exp.period}
+              <Calendar className="h-3.5 w-3.5" />
+              {exp.period}
             </span>
             <span className="flex items-center gap-1">
-              <MapPin className="h-3.5 w-3.5" />{exp.location}
+              <MapPin className="h-3.5 w-3.5" />
+              {exp.location}
             </span>
           </div>
 
@@ -184,14 +210,16 @@ function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
           {exp.expandedAchievements.length > 0 && (
             <>
               <button
-                onClick={() => setExpanded(e => !e)}
+                onClick={() => setExpanded((e) => !e)}
                 className="flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors mb-3 group"
                 aria-expanded={expanded}
               >
                 <ChevronDown
                   className={`h-3.5 w-3.5 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
                 />
-                {expanded ? 'Show less' : `Show ${exp.expandedAchievements.length} more achievements`}
+                {expanded
+                  ? 'Show less'
+                  : `Show ${exp.expandedAchievements.length} more achievements`}
               </button>
 
               <AnimatePresence>
@@ -205,7 +233,10 @@ function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
                   >
                     <ul className="space-y-1.5 mb-4 border-l-2 border-primary/20 pl-4">
                       {exp.expandedAchievements.map((a, j) => (
-                        <li key={j} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <li
+                          key={j}
+                          className="text-sm text-muted-foreground flex items-start gap-2"
+                        >
                           <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mt-1.5 flex-shrink-0" />
                           {a}
                         </li>
@@ -219,7 +250,7 @@ function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
 
           {/* Tech stack */}
           <div className="flex flex-wrap gap-1.5 mb-4">
-            {exp.tech.map(t => (
+            {exp.tech.map((t) => (
               <Badge key={t} variant="secondary" className="text-xs bg-muted/20 border-border/40">
                 {t}
               </Badge>
@@ -229,7 +260,7 @@ function ExperienceCard({ exp }: { exp: typeof EXPERIENCES[0] }) {
           {/* Links */}
           {exp.links.length > 0 && (
             <div className="flex gap-3">
-              {exp.links.map(link => (
+              {exp.links.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
@@ -275,7 +306,7 @@ const Experience = () => {
           Professional Experience
         </h3>
         <div className="relative mb-20">
-          {EXPERIENCES.map(exp => (
+          {EXPERIENCES.map((exp) => (
             <ExperienceCard key={exp.id} exp={exp} />
           ))}
         </div>
@@ -323,7 +354,7 @@ const Experience = () => {
                         {proj.description}
                       </p>
                       <div className="flex flex-wrap gap-1">
-                        {proj.tech.map(t => (
+                        {proj.tech.map((t) => (
                           <span
                             key={t}
                             className="text-xs px-2 py-0.5 rounded-full bg-muted/30 border border-border/30 text-muted-foreground"
@@ -367,11 +398,20 @@ const Experience = () => {
                   </div>
 
                   <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{edu.period}</span>
-                    <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{edu.location}</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {edu.period}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5" />
+                      {edu.location}
+                    </span>
                   </div>
 
-                  <Badge variant="outline" className="mb-4 border-blue-500/30 text-blue-400 text-xs">
+                  <Badge
+                    variant="outline"
+                    className="mb-4 border-blue-500/30 text-blue-400 text-xs"
+                  >
                     {edu.focus}
                   </Badge>
 

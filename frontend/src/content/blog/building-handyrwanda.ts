@@ -1,8 +1,7 @@
 export const post = {
   slug: 'building-handyrwanda',
   title: 'Building a Service Marketplace for Rwanda: What I Learned',
-  excerpt:
-    `HandyRwanda is a full-stack service marketplace connecting Rwandans with skilled tradespeople. Here's the technical journey, the hard decisions, and what I'd do differently.`,
+  excerpt: `HandyRwanda is a full-stack service marketplace connecting Rwandans with skilled tradespeople. Here's the technical journey, the hard decisions, and what I'd do differently.`,
   date: '2025-12-10',
   readingTime: '8 min read',
   tags: ['FastAPI', 'React Native', 'Socket.IO', 'MTN MoMo', 'PostgreSQL'],

@@ -13,11 +13,7 @@ const devFormat = combine(
   })
 );
 
-const prodFormat = combine(
-  timestamp(),
-  errors({ stack: true }),
-  winston.format.json()
-);
+const prodFormat = combine(timestamp(), errors({ stack: true }), winston.format.json());
 
 export const logger = winston.createLogger({
   level: process.env.NODE_ENV === 'production' ? 'warn' : 'debug',

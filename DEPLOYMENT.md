@@ -13,11 +13,11 @@
 3. Framework: **Vite** (auto-detected)
 4. Set environment variables in the Vercel dashboard:
 
-| Variable | Value |
-|---|---|
-| `VITE_API_URL` | `https://portfolio-backend.onrender.com/api` (your Render URL) |
-| `VITE_SITE_URL` | `https://enockuwumukiza.dev` |
-| `VITE_ENABLE_ANALYTICS` | `true` |
+| Variable                | Value                                                          |
+| ----------------------- | -------------------------------------------------------------- |
+| `VITE_API_URL`          | `https://portfolio-backend.onrender.com/api` (your Render URL) |
+| `VITE_SITE_URL`         | `https://enockuwumukiza.dev`                                   |
+| `VITE_ENABLE_ANALYTICS` | `true`                                                         |
 
 5. Click **Deploy**
 
@@ -26,6 +26,7 @@
 In Vercel project → **Settings → Domains** → Add `enockuwumukiza.dev`
 
 Update DNS:
+
 ```
 A    @    76.76.21.21
 CNAME www  cname.vercel-dns.com
@@ -72,14 +73,14 @@ curl https://portfolio-backend.onrender.com/api/health
 
 The pipeline runs on every push. To enable auto-deploy on merge to `main`, add these GitHub Secrets:
 
-| Secret | Where to get it |
-|---|---|
-| `VERCEL_TOKEN` | Vercel → Account Settings → Tokens |
-| `VERCEL_ORG_ID` | Vercel → Settings → General → Team ID |
-| `VERCEL_PROJECT_ID` | Vercel → Project → Settings → General |
+| Secret                   | Where to get it                           |
+| ------------------------ | ----------------------------------------- |
+| `VERCEL_TOKEN`           | Vercel → Account Settings → Tokens        |
+| `VERCEL_ORG_ID`          | Vercel → Settings → General → Team ID     |
+| `VERCEL_PROJECT_ID`      | Vercel → Project → Settings → General     |
 | `RENDER_DEPLOY_HOOK_URL` | Render → Service → Settings → Deploy Hook |
-| `VITE_API_URL` | Your Render backend URL |
-| `VITE_SITE_URL` | Your Vercel frontend URL |
+| `VITE_API_URL`           | Your Render backend URL                   |
+| `VITE_SITE_URL`          | Your Vercel frontend URL                  |
 
 ---
 
@@ -106,7 +107,7 @@ npm install
 # Frontend only
 cd frontend && npm run dev     # → http://localhost:3000
 
-# Backend only  
+# Backend only
 cd backend && npm run dev      # → http://localhost:4000
 
 # Both at once (from root)
@@ -114,6 +115,7 @@ npm run dev
 ```
 
 For backend dev with DB:
+
 ```bash
 # Start Postgres via Docker Compose
 docker-compose up postgres -d

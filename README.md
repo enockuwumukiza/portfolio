@@ -23,6 +23,7 @@ portfolio/
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 20+
 - npm 9+
 
@@ -59,14 +60,14 @@ docker-compose up -d
 
 ## Backend API
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /api/health | Health check |
-| POST | /api/contact | Submit contact form |
-| GET | /api/projects | Get all projects |
-| GET | /api/projects/:slug | Get single project |
-| POST | /api/analytics/track | Track event |
-| GET | /api/analytics/stats | Analytics summary |
+| Method | Endpoint             | Description         |
+| ------ | -------------------- | ------------------- |
+| GET    | /api/health          | Health check        |
+| POST   | /api/contact         | Submit contact form |
+| GET    | /api/projects        | Get all projects    |
+| GET    | /api/projects/:slug  | Get single project  |
+| POST   | /api/analytics/track | Track event         |
+| GET    | /api/analytics/stats | Analytics summary   |
 
 ---
 

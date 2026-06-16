@@ -35,7 +35,8 @@ export const projects: Project[] = [
       'Users struggle to manage growing wardrobes and find outfit combinations, wasting 30+ minutes daily on clothing decisions.',
     solution:
       'Built a computer vision pipeline to classify uploaded clothing items and a recommendation engine that suggests outfits based on style, weather, and occasion.',
-    outcome: 'Reduced outfit decision time by ~80% in user testing. Accepted 500+ clothing items in beta.',
+    outcome:
+      'Reduced outfit decision time by ~80% in user testing. Accepted 500+ clothing items in beta.',
     demoUrl: null,
     githubUrl: 'https://github.com/Enochrwa/myward',
     imageUrl: '/images/wardrobe.jpeg',
@@ -57,7 +58,8 @@ export const projects: Project[] = [
       'Dynamic pricing tiers',
     ],
     problem: 'Most resume builders are bloated, slow, or lock exports behind expensive paywalls.',
-    solution: 'Built a focused, fast resume editor with opinionated templates that actually pass ATS systems.',
+    solution:
+      'Built a focused, fast resume editor with opinionated templates that actually pass ATS systems.',
     outcome: 'Live at resumeforge-five.vercel.app. Used by 50+ job seekers.',
     demoUrl: 'https://resumeforge-five.vercel.app',
     githubUrl: 'https://github.com/Enochrwa/resumee-craft-studio',
@@ -84,7 +86,8 @@ export const projects: Project[] = [
       'Building a real-time communication platform that handles concurrent WebRTC sessions without degrading message delivery.',
     solution:
       'Architected a Socket.io room system with Redis adapter for horizontal scaling, WebRTC signaling server, and MongoDB for persistent message history.',
-    outcome: 'Handles 50+ concurrent WebSocket connections in testing. Fully dockerized for easy deployment.',
+    outcome:
+      'Handles 50+ concurrent WebSocket connections in testing. Fully dockerized for easy deployment.',
     demoUrl: null,
     githubUrl: 'https://github.com/enockuwumukiza/e-chat',
     imageUrl: '/images/chat.png',
@@ -98,7 +101,16 @@ export const projects: Project[] = [
     description:
       'Full-stack marketplace platform for Rwanda with FastAPI backend, React web frontend, and React Native mobile app. Features job posting, bidding, voice messaging, and Rwanda administrative address hierarchy.',
     category: 'fullstack',
-    tech: ['FastAPI', 'Python', 'React', 'TypeScript', 'React Native', 'Expo', 'PostgreSQL', 'TanStack Query'],
+    tech: [
+      'FastAPI',
+      'Python',
+      'React',
+      'TypeScript',
+      'React Native',
+      'Expo',
+      'PostgreSQL',
+      'TanStack Query',
+    ],
     features: [
       'End-to-end voice messaging in chat',
       'Rwanda 8-level address hierarchy',

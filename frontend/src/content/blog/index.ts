@@ -13,11 +13,9 @@ export type BlogPost = {
   content: string;
 };
 
-export const ALL_POSTS: BlogPost[] = [
-  fastapiVsNodejs,
-  voiceMessaging,
-  handyrwanda,
-].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+export const ALL_POSTS: BlogPost[] = [fastapiVsNodejs, voiceMessaging, handyrwanda].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return ALL_POSTS.find((p) => p.slug === slug);

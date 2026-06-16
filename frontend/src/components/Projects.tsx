@@ -5,7 +5,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ExternalLink, Github, Brain, Zap, Globe, Layers, Smartphone, RefreshCw } from 'lucide-react';
+import {
+  ExternalLink,
+  Github,
+  Brain,
+  Zap,
+  Globe,
+  Layers,
+  Smartphone,
+  RefreshCw,
+} from 'lucide-react';
 import { track } from '@/lib/analytics';
 import wardrobeImage from '../../public/images/wardrobe.webp';
 import chatImage from '../../public/images/chat.webp';
@@ -42,7 +51,8 @@ const FALLBACK_PROJECTS: Project[] = [
     title: 'HandyRwanda',
     description:
       'A full-stack service marketplace connecting artisans and clients across Rwanda — with payments, real-time messaging, and GPS-based matching.',
-    problem: 'Rwanda has thousands of skilled artisans with no digital presence, making it hard for clients to find and trust local services.',
+    problem:
+      'Rwanda has thousands of skilled artisans with no digital presence, making it hard for clients to find and trust local services.',
     solution:
       'Built a full-stack marketplace with MTN MoMo/Airtel Money payments, Socket.IO real-time messaging, Expo push notifications, and Rwanda address hierarchy (Province→Village).',
     outcome:
@@ -51,7 +61,11 @@ const FALLBACK_PROJECTS: Project[] = [
     tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL', 'Socket.IO', 'Expo', 'sklearn'],
     category: 'Full-Stack',
     icon: Layers,
-    features: ['MTN MoMo / Airtel Money payments', 'Real-time chat (Socket.IO)', 'ML earnings forecasting'],
+    features: [
+      'MTN MoMo / Airtel Money payments',
+      'Real-time chat (Socket.IO)',
+      'ML earnings forecasting',
+    ],
     demo: null,
     github: 'https://github.com/Enochrwa/HandyRwanda',
     featured: true,
@@ -62,8 +76,10 @@ const FALLBACK_PROJECTS: Project[] = [
     description:
       'AI wardrobe management system with outfit matching, background removal, and smart recommendations.',
     problem: 'People forget what clothing they own and struggle to build cohesive outfits.',
-    solution: 'Built a computer vision pipeline (TensorFlow + sklearn) for clothing type detection and outfit scoring with background removal.',
-    outcome: 'Fully functional MVP with real-time outfit recommendations, running locally without cloud GPU.',
+    solution:
+      'Built a computer vision pipeline (TensorFlow + sklearn) for clothing type detection and outfit scoring with background removal.',
+    outcome:
+      'Fully functional MVP with real-time outfit recommendations, running locally without cloud GPU.',
     image: wardrobeImage,
     tech: ['React', 'TypeScript', 'Python', 'TensorFlow', 'sklearn', 'MySQL'],
     category: 'ML/AI',
@@ -77,8 +93,10 @@ const FALLBACK_PROJECTS: Project[] = [
     title: 'Resume Builder',
     description:
       'Simplified resume builder with professional templates, dynamic pricing, and one-click PDF export.',
-    problem: 'Most resume builders are either too complex or too limited for developers and students.',
-    solution: 'Built with Next.js + Redis for fast template rendering, with dynamic pricing tiers and smart export.',
+    problem:
+      'Most resume builders are either too complex or too limited for developers and students.',
+    solution:
+      'Built with Next.js + Redis for fast template rendering, with dynamic pricing tiers and smart export.',
     outcome: 'Live on Vercel with steady organic traffic from shared links.',
     image: resumeImage,
     tech: ['Next.js', 'Node.js', 'Redis', 'React'],
@@ -93,9 +111,12 @@ const FALLBACK_PROJECTS: Project[] = [
     title: 'Real-Time Chat Application',
     description:
       'Modern team collaboration platform with live video/audio calls, voice recording, and smart notifications.',
-    problem: 'Existing tools are either too heavy (Slack/Teams) or too limited for self-hosted deployments.',
-    solution: 'Built on Socket.IO with WebRTC for peer-to-peer video/audio, MongoDB for message persistence, Docker for self-hosting.',
-    outcome: 'Full real-time chat with video/audio recording, notification system, and Docker Compose one-command deploy.',
+    problem:
+      'Existing tools are either too heavy (Slack/Teams) or too limited for self-hosted deployments.',
+    solution:
+      'Built on Socket.IO with WebRTC for peer-to-peer video/audio, MongoDB for message persistence, Docker for self-hosting.',
+    outcome:
+      'Full real-time chat with video/audio recording, notification system, and Docker Compose one-command deploy.',
     image: chatImage,
     tech: ['React', 'Socket.IO', 'MongoDB', 'Express', 'Docker', 'WebRTC'],
     category: 'Real-Time',
@@ -117,8 +138,20 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Mobile: Smartphone,
 };
 
-function normalizeProject(p: Project): Project & { resolvedImage: string; resolvedDemo: string | null; resolvedGithub: string; resolvedCategory: string } {
-  const categoryMap: Record<string, string> = { ml: 'ML/AI', fullstack: 'Full-Stack', realtime: 'Real-Time', mobile: 'Mobile' };
+function normalizeProject(
+  p: Project
+): Project & {
+  resolvedImage: string;
+  resolvedDemo: string | null;
+  resolvedGithub: string;
+  resolvedCategory: string;
+} {
+  const categoryMap: Record<string, string> = {
+    ml: 'ML/AI',
+    fullstack: 'Full-Stack',
+    realtime: 'Real-Time',
+    mobile: 'Mobile',
+  };
   const rawCategory = p.category ?? 'Full-Stack';
   const resolvedCategory = categoryMap[rawCategory] ?? rawCategory;
   return {
@@ -160,7 +193,9 @@ function SkeletonCard() {
       <CardContent className="space-y-4">
         <Skeleton className="h-4 w-1/2" />
         <div className="space-y-2">
-          {[1, 2, 3].map(i => <Skeleton key={i} className="h-3 w-full" />)}
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-3 w-full" />
+          ))}
         </div>
         <div className="flex gap-2 pt-2">
           <Skeleton className="h-9 flex-1 rounded-md" />
@@ -178,10 +213,7 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
   const Icon = project.icon ?? Layers;
 
   return (
-    <motion.div
-      variants={itemVariants}
-      className="col-span-full mb-4"
-    >
+    <motion.div variants={itemVariants} className="col-span-full mb-4">
       <Card className="bg-gradient-card border-primary/30 border-2 hover-lift group relative overflow-hidden">
         {/* Gold accent bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary" />
@@ -208,16 +240,26 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
                 <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                   <Icon className="h-5 w-5 text-primary" />
                 </div>
-                <Badge className="bg-primary/20 text-primary border-primary/40 text-xs">⭐ Featured Project</Badge>
-                <Badge variant="outline" className="text-xs border-primary/30 text-primary">{project.resolvedCategory}</Badge>
+                <Badge className="bg-primary/20 text-primary border-primary/40 text-xs">
+                  ⭐ Featured Project
+                </Badge>
+                <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+                  {project.resolvedCategory}
+                </Badge>
               </div>
               <div>
-                <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors mb-1">{project.title}</h3>
-                {project.tagline && <p className="text-sm text-primary/70 font-medium mb-2">{project.tagline}</p>}
-                <p className="text-muted-foreground leading-relaxed text-sm">{project.description}</p>
+                <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors mb-1">
+                  {project.title}
+                </h3>
+                {project.tagline && (
+                  <p className="text-sm text-primary/70 font-medium mb-2">{project.tagline}</p>
+                )}
+                <p className="text-muted-foreground leading-relaxed text-sm">
+                  {project.description}
+                </p>
               </div>
               <ul className="space-y-1.5">
-                {project.features.map(f => (
+                {project.features.map((f) => (
                   <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                     {f}
@@ -227,7 +269,7 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
               {/* Case study */}
               <div>
                 <button
-                  onClick={() => setExpanded(v => !v)}
+                  onClick={() => setExpanded((v) => !v)}
                   className="text-xs font-medium text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded"
                   aria-expanded={expanded}
                 >
@@ -243,9 +285,18 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
                       className="overflow-hidden"
                     >
                       <div className="mt-3 space-y-2 text-sm text-muted-foreground border-l-2 border-primary/30 pl-3">
-                        <p><span className="font-semibold text-foreground">Problem:</span> {project.problem}</p>
-                        <p><span className="font-semibold text-foreground">Solution:</span> {project.solution}</p>
-                        <p><span className="font-semibold text-foreground">Outcome:</span> {project.outcome}</p>
+                        <p>
+                          <span className="font-semibold text-foreground">Problem:</span>{' '}
+                          {project.problem}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">Solution:</span>{' '}
+                          {project.solution}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">Outcome:</span>{' '}
+                          {project.outcome}
+                        </p>
                       </div>
                     </motion.div>
                   )}
@@ -254,8 +305,14 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
             </div>
             <div className="space-y-3 pt-4">
               <div className="flex flex-wrap gap-1.5">
-                {project.tech.map(t => (
-                  <Badge key={t} variant="secondary" className="text-xs bg-muted/30 text-foreground border-border/40">{t}</Badge>
+                {project.tech.map((t) => (
+                  <Badge
+                    key={t}
+                    variant="secondary"
+                    className="text-xs bg-muted/30 text-foreground border-border/40"
+                  >
+                    {t}
+                  </Badge>
                 ))}
               </div>
               <div className="flex gap-2">
@@ -267,12 +324,17 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
                     onClick={() => track('project_click', { project: project.title, type: 'demo' })}
                     className="flex-1"
                   >
-                    <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <Button
+                      size="sm"
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                    >
                       <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
                     </Button>
                   </a>
                 ) : (
-                  <Button size="sm" disabled className="flex-1 opacity-40 cursor-not-allowed">Demo Coming Soon</Button>
+                  <Button size="sm" disabled className="flex-1 opacity-40 cursor-not-allowed">
+                    Demo Coming Soon
+                  </Button>
                 )}
                 <a
                   href={project.resolvedGithub}
@@ -281,7 +343,11 @@ function FeaturedProjectCard({ project }: { project: ReturnType<typeof normalize
                   onClick={() => track('project_click', { project: project.title, type: 'github' })}
                   aria-label={`View ${project.title} source on GitHub`}
                 >
-                  <Button variant="outline" size="sm" className="border-border/50 hover:bg-muted/20">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-border/50 hover:bg-muted/20"
+                  >
                     <Github className="h-4 w-4" />
                   </Button>
                 </a>
@@ -308,9 +374,13 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
               <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                 <Icon className="h-5 w-5 text-primary" />
               </div>
-              <Badge variant="outline" className="text-xs border-primary/30 text-primary">{project.resolvedCategory}</Badge>
+              <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+                {project.resolvedCategory}
+              </Badge>
             </div>
-            {project.year && <span className="text-xs text-muted-foreground font-mono">{project.year}</span>}
+            {project.year && (
+              <span className="text-xs text-muted-foreground font-mono">{project.year}</span>
+            )}
           </div>
           <div className="aspect-video rounded-lg bg-muted/20 border border-border/50 overflow-hidden relative">
             {!imageLoaded && <Skeleton className="absolute inset-0 rounded-lg" />}
@@ -325,14 +395,20 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
               className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             />
           </div>
-          <CardTitle className="text-xl group-hover:text-primary transition-colors">{project.title}</CardTitle>
-          <CardDescription className="text-muted-foreground leading-relaxed">{project.description}</CardDescription>
+          <CardTitle className="text-xl group-hover:text-primary transition-colors">
+            {project.title}
+          </CardTitle>
+          <CardDescription className="text-muted-foreground leading-relaxed">
+            {project.description}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5 flex-1 flex flex-col">
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Highlights</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+              Highlights
+            </h4>
             <ul className="space-y-1.5">
-              {project.features.map(f => (
+              {project.features.map((f) => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                   {f}
@@ -342,7 +418,7 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
           </div>
           <div>
             <button
-              onClick={() => setExpanded(v => !v)}
+              onClick={() => setExpanded((v) => !v)}
               className="text-xs font-medium text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded"
               aria-expanded={expanded}
             >
@@ -358,9 +434,18 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
                   className="overflow-hidden"
                 >
                   <div className="mt-3 space-y-2 text-sm text-muted-foreground border-l-2 border-primary/30 pl-3">
-                    <p><span className="font-semibold text-foreground">Problem:</span> {project.problem}</p>
-                    <p><span className="font-semibold text-foreground">Solution:</span> {project.solution}</p>
-                    <p><span className="font-semibold text-foreground">Outcome:</span> {project.outcome}</p>
+                    <p>
+                      <span className="font-semibold text-foreground">Problem:</span>{' '}
+                      {project.problem}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-foreground">Solution:</span>{' '}
+                      {project.solution}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-foreground">Outcome:</span>{' '}
+                      {project.outcome}
+                    </p>
                   </div>
                 </motion.div>
               )}
@@ -368,8 +453,14 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
           </div>
           <div>
             <div className="flex flex-wrap gap-1.5">
-              {project.tech.map(t => (
-                <Badge key={t} variant="secondary" className="text-xs bg-muted/30 text-foreground border-border/40">{t}</Badge>
+              {project.tech.map((t) => (
+                <Badge
+                  key={t}
+                  variant="secondary"
+                  className="text-xs bg-muted/30 text-foreground border-border/40"
+                >
+                  {t}
+                </Badge>
               ))}
             </div>
           </div>
@@ -382,12 +473,20 @@ function ProjectCard({ project }: { project: ReturnType<typeof normalizeProject>
                 onClick={() => track('project_click', { project: project.title, type: 'demo' })}
                 className="flex-1"
               >
-                <Button size="sm" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button
+                  size="sm"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                >
                   <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
                 </Button>
               </a>
             ) : (
-              <Button size="sm" disabled className="flex-1 opacity-40 cursor-not-allowed" aria-label="Demo not yet available">
+              <Button
+                size="sm"
+                disabled
+                className="flex-1 opacity-40 cursor-not-allowed"
+                aria-label="Demo not yet available"
+              >
                 Demo TBD
               </Button>
             )}
@@ -414,13 +513,18 @@ async function fetchProjects(): Promise<Project[]> {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const json = await res.json();
   // Backend wraps in { success, data } or returns array directly
-  return Array.isArray(json) ? json : json.data ?? json.projects ?? [];
+  return Array.isArray(json) ? json : (json.data ?? json.projects ?? []);
 }
 
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState<Filter>('All');
 
-  const { data: apiProjects, isLoading, isError, refetch } = useQuery<Project[]>({
+  const {
+    data: apiProjects,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery<Project[]>({
     queryKey: ['projects'],
     queryFn: fetchProjects,
     retry: 1,
@@ -430,17 +534,19 @@ const Projects = () => {
   const rawProjects = isError || !apiProjects?.length ? FALLBACK_PROJECTS : apiProjects;
   const normalized = rawProjects.map(normalizeProject);
 
-  const featuredProject = normalized.find(p => p.featured);
-  const nonFeatured = normalized.filter(p => !p.featured);
+  const featuredProject = normalized.find((p) => p.featured);
+  const nonFeatured = normalized.filter((p) => !p.featured);
 
   // Available filters based on actual data
-  const availableCategories = new Set(normalized.map(p => p.resolvedCategory));
-  const visibleFilters = FILTERS.filter(f => f === 'All' || availableCategories.has(f));
+  const availableCategories = new Set(normalized.map((p) => p.resolvedCategory));
+  const visibleFilters = FILTERS.filter((f) => f === 'All' || availableCategories.has(f));
 
   const filteredNonFeatured = nonFeatured.filter(
-    p => activeFilter === 'All' || p.resolvedCategory === activeFilter
+    (p) => activeFilter === 'All' || p.resolvedCategory === activeFilter
   );
-  const showFeatured = activeFilter === 'All' || (featuredProject && featuredProject.resolvedCategory === activeFilter);
+  const showFeatured =
+    activeFilter === 'All' ||
+    (featuredProject && featuredProject.resolvedCategory === activeFilter);
 
   return (
     <section id="projects" className="py-24 px-4">
@@ -462,7 +568,10 @@ const Projects = () => {
           {isError && (
             <p className="text-xs text-muted-foreground/60 mt-3 flex items-center justify-center gap-2">
               Showing local data.{' '}
-              <button onClick={() => refetch()} className="text-primary underline inline-flex items-center gap-1 hover:no-underline">
+              <button
+                onClick={() => refetch()}
+                className="text-primary underline inline-flex items-center gap-1 hover:no-underline"
+              >
                 <RefreshCw className="h-3 w-3" /> Retry
               </button>
             </p>
@@ -470,8 +579,12 @@ const Projects = () => {
         </motion.div>
 
         {/* Filter tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10" role="tablist" aria-label="Project category filter">
-          {visibleFilters.map(f => (
+        <div
+          className="flex flex-wrap justify-center gap-2 mb-10"
+          role="tablist"
+          aria-label="Project category filter"
+        >
+          {visibleFilters.map((f) => (
             <button
               key={f}
               role="tab"
@@ -498,7 +611,9 @@ const Projects = () => {
               exit={{ opacity: 0 }}
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {[1, 2, 3, 4].map(i => <SkeletonCard key={i} />)}
+              {[1, 2, 3, 4].map((i) => (
+                <SkeletonCard key={i} />
+              ))}
             </motion.div>
           ) : (
             <motion.div
@@ -509,10 +624,8 @@ const Projects = () => {
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {showFeatured && featuredProject && (
-                <FeaturedProjectCard project={featuredProject} />
-              )}
-              {filteredNonFeatured.map(project => (
+              {showFeatured && featuredProject && <FeaturedProjectCard project={featuredProject} />}
+              {filteredNonFeatured.map((project) => (
                 <ProjectCard key={project.slug ?? project.title} project={project} />
               ))}
             </motion.div>

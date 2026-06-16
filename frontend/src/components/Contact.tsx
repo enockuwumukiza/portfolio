@@ -8,7 +8,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Mail, Linkedin, Github, Twitter, Send, Coffee, Briefcase, MessageSquare, Calendar, CheckCircle, AlertCircle, Clock, Video } from 'lucide-react';
+import {
+  Mail,
+  Linkedin,
+  Github,
+  Twitter,
+  Send,
+  Coffee,
+  Briefcase,
+  MessageSquare,
+  Calendar,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Video,
+} from 'lucide-react';
 import { track } from '@/lib/analytics';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
@@ -55,15 +69,39 @@ const CONTACT_METHODS = [
 ];
 
 const INQUIRY_TYPES = [
-  { type: 'collaboration' as const, Icon: Coffee, title: 'Collaboration', description: "Let's build something together" },
-  { type: 'hiring' as const, Icon: Briefcase, title: 'Hiring', description: 'Full-time or contract roles' },
-  { type: 'general' as const, Icon: MessageSquare, title: 'General', description: 'Questions, feedback, hi!' },
+  {
+    type: 'collaboration' as const,
+    Icon: Coffee,
+    title: 'Collaboration',
+    description: "Let's build something together",
+  },
+  {
+    type: 'hiring' as const,
+    Icon: Briefcase,
+    title: 'Hiring',
+    description: 'Full-time or contract roles',
+  },
+  {
+    type: 'general' as const,
+    Icon: MessageSquare,
+    title: 'General',
+    description: 'Questions, feedback, hi!',
+  },
 ];
 
 const SMART_SUGGESTIONS: Record<ContactFormData['type'], { subject: string; message: string }> = {
-  collaboration: { subject: 'Project Collaboration Opportunity', message: "Hi Enock! I have a project I'd love your expertise on…" },
-  hiring: { subject: 'Job Opportunity', message: "Hi Enock! We're looking for a developer with your background…" },
-  general: { subject: 'Reaching Out', message: "Hi Enock! I came across your portfolio and wanted to…" },
+  collaboration: {
+    subject: 'Project Collaboration Opportunity',
+    message: "Hi Enock! I have a project I'd love your expertise on…",
+  },
+  hiring: {
+    subject: 'Job Opportunity',
+    message: "Hi Enock! We're looking for a developer with your background…",
+  },
+  general: {
+    subject: 'Reaching Out',
+    message: 'Hi Enock! I came across your portfolio and wanted to…',
+  },
 };
 
 const Contact = () => {
@@ -169,9 +207,13 @@ const Contact = () => {
                             : 'border-border/50 hover:border-primary/40'
                         }`}
                       >
-                        <Icon className={`h-4 w-4 mb-1 ${selectedType === type ? 'text-primary' : 'text-muted-foreground'}`} />
+                        <Icon
+                          className={`h-4 w-4 mb-1 ${selectedType === type ? 'text-primary' : 'text-muted-foreground'}`}
+                        />
                         <div className="text-xs font-medium">{title}</div>
-                        <div className="text-xs text-muted-foreground hidden sm:block">{description}</div>
+                        <div className="text-xs text-muted-foreground hidden sm:block">
+                          {description}
+                        </div>
                       </button>
                     ))}
                   </div>
@@ -181,7 +223,10 @@ const Contact = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="contact-name" className="text-sm font-medium mb-1.5 block">
-                        Name <span className="text-destructive" aria-hidden="true">*</span>
+                        Name{' '}
+                        <span className="text-destructive" aria-hidden="true">
+                          *
+                        </span>
                       </label>
                       <Input
                         id="contact-name"
@@ -193,12 +238,17 @@ const Contact = () => {
                         className="bg-background/50 border-border/50"
                       />
                       {errors.name && (
-                        <p id="name-error" className="text-xs text-destructive mt-1" role="alert">{errors.name.message}</p>
+                        <p id="name-error" className="text-xs text-destructive mt-1" role="alert">
+                          {errors.name.message}
+                        </p>
                       )}
                     </div>
                     <div>
                       <label htmlFor="contact-email" className="text-sm font-medium mb-1.5 block">
-                        Email <span className="text-destructive" aria-hidden="true">*</span>
+                        Email{' '}
+                        <span className="text-destructive" aria-hidden="true">
+                          *
+                        </span>
                       </label>
                       <Input
                         id="contact-email"
@@ -211,14 +261,19 @@ const Contact = () => {
                         className="bg-background/50 border-border/50"
                       />
                       {errors.email && (
-                        <p id="email-error" className="text-xs text-destructive mt-1" role="alert">{errors.email.message}</p>
+                        <p id="email-error" className="text-xs text-destructive mt-1" role="alert">
+                          {errors.email.message}
+                        </p>
                       )}
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="contact-subject" className="text-sm font-medium mb-1.5 block">
-                      Subject <span className="text-destructive" aria-hidden="true">*</span>
+                      Subject{' '}
+                      <span className="text-destructive" aria-hidden="true">
+                        *
+                      </span>
                     </label>
                     <Input
                       id="contact-subject"
@@ -229,13 +284,18 @@ const Contact = () => {
                       className="bg-background/50 border-border/50"
                     />
                     {errors.subject && (
-                      <p id="subject-error" className="text-xs text-destructive mt-1" role="alert">{errors.subject.message}</p>
+                      <p id="subject-error" className="text-xs text-destructive mt-1" role="alert">
+                        {errors.subject.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
                     <label htmlFor="contact-message" className="text-sm font-medium mb-1.5 block">
-                      Message <span className="text-destructive" aria-hidden="true">*</span>
+                      Message{' '}
+                      <span className="text-destructive" aria-hidden="true">
+                        *
+                      </span>
                     </label>
                     <Textarea
                       id="contact-message"
@@ -247,19 +307,27 @@ const Contact = () => {
                       className="bg-background/50 border-border/50 resize-none"
                     />
                     {errors.message && (
-                      <p id="message-error" className="text-xs text-destructive mt-1" role="alert">{errors.message.message}</p>
+                      <p id="message-error" className="text-xs text-destructive mt-1" role="alert">
+                        {errors.message.message}
+                      </p>
                     )}
                   </div>
 
                   {/* Submit state feedback */}
                   {submitState === 'success' && (
-                    <div className="flex items-center gap-2 text-sm text-green-500 bg-green-500/10 border border-green-500/20 rounded-lg px-4 py-3" role="status">
+                    <div
+                      className="flex items-center gap-2 text-sm text-green-500 bg-green-500/10 border border-green-500/20 rounded-lg px-4 py-3"
+                      role="status"
+                    >
                       <CheckCircle className="h-4 w-4 flex-shrink-0" />
                       Message sent! I'll reply within 24 hours.
                     </div>
                   )}
                   {submitState === 'error' && (
-                    <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-3" role="alert">
+                    <div
+                      className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-4 py-3"
+                      role="alert"
+                    >
                       <AlertCircle className="h-4 w-4 flex-shrink-0" />
                       Something went wrong. Please email me directly at wwwenockuwumukiza@gmail.com
                     </div>
@@ -276,9 +344,13 @@ const Contact = () => {
                         Sending…
                       </span>
                     ) : submitState === 'success' ? (
-                      <span className="flex items-center gap-2"><CheckCircle className="h-4 w-4" /> Sent!</span>
+                      <span className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4" /> Sent!
+                      </span>
                     ) : (
-                      <span className="flex items-center gap-2"><Send className="h-4 w-4" /> Send Message</span>
+                      <span className="flex items-center gap-2">
+                        <Send className="h-4 w-4" /> Send Message
+                      </span>
                     )}
                   </Button>
                 </form>
@@ -329,15 +401,20 @@ const Contact = () => {
                   <span className="font-semibold text-sm">Prefer to talk?</span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Book a free 30-min intro call — no sales pitch, just a real conversation about your project or opportunity.
+                  Book a free 30-min intro call — no sales pitch, just a real conversation about
+                  your project or opportunity.
                 </p>
                 <a
-                  href="https://calendly.com/wwwenockuwumukiza"
+                  href="https://calendly.com/enockuwumukiza"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => track('contact_open', { context: 'calendly_book_call' })}
                 >
-                  <Button size="sm" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full border-primary/40 text-primary hover:bg-primary/10"
+                  >
                     <Calendar className="mr-2 h-4 w-4" />
                     Book a 30-min call
                   </Button>
@@ -358,14 +435,25 @@ const Contact = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 {[
-                  { label: 'Status',         value: <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Open to Opportunities</Badge> },
-                  { label: 'Response Time',  value: 'Within 24 hours' },
-                  { label: 'Timezone',       value: 'CAT (UTC+2) · Kigali, Rwanda' },
+                  {
+                    label: 'Status',
+                    value: (
+                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                        Open to Opportunities
+                      </Badge>
+                    ),
+                  },
+                  { label: 'Response Time', value: 'Within 24 hours' },
+                  { label: 'Timezone', value: 'CAT (UTC+2) · Kigali, Rwanda' },
                   { label: 'Preferred Work', value: 'Remote · Contract · Full-time' },
                 ].map(({ label, value }) => (
                   <div key={label} className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">{label}</span>
-                    {typeof value === 'string' ? <span className="text-foreground font-medium">{value}</span> : value}
+                    {typeof value === 'string' ? (
+                      <span className="text-foreground font-medium">{value}</span>
+                    ) : (
+                      value
+                    )}
                   </div>
                 ))}
               </CardContent>

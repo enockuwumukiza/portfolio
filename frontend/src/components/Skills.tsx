@@ -3,8 +3,14 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-  Code2, Database, Brain, Cloud, Terminal, GitBranch,
-  Smartphone, Layers
+  Code2,
+  Database,
+  Brain,
+  Cloud,
+  Terminal,
+  GitBranch,
+  Smartphone,
+  Layers,
 } from 'lucide-react';
 
 // Sprint 3.5: Kill progress bars. Replace with tech grid + tooltips.
@@ -28,12 +34,12 @@ const CATEGORIES: Category[] = [
     icon: Code2,
     color: 'primary',
     skills: [
-      { name: 'React',          usedIn: ['HandyRwanda', 'eChat', 'AI Wardrobe'], level: 'core' },
-      { name: 'TypeScript',     usedIn: ['HandyRwanda', 'KivuNova', 'Portfolio'],  level: 'core' },
-      { name: 'Next.js',        usedIn: ['Resume Builder'],                         level: 'proficient' },
-      { name: 'Tailwind CSS',   usedIn: ['HandyRwanda', 'Portfolio'],               level: 'core' },
-      { name: 'Framer Motion',  usedIn: ['Portfolio', 'HandyRwanda'],               level: 'proficient' },
-      { name: 'TanStack Query', usedIn: ['KivuNova', 'HandyRwanda'],                level: 'proficient' },
+      { name: 'React', usedIn: ['HandyRwanda', 'eChat', 'AI Wardrobe'], level: 'core' },
+      { name: 'TypeScript', usedIn: ['HandyRwanda', 'KivuNova', 'Portfolio'], level: 'core' },
+      { name: 'Next.js', usedIn: ['Resume Builder'], level: 'proficient' },
+      { name: 'Tailwind CSS', usedIn: ['HandyRwanda', 'Portfolio'], level: 'core' },
+      { name: 'Framer Motion', usedIn: ['Portfolio', 'HandyRwanda'], level: 'proficient' },
+      { name: 'TanStack Query', usedIn: ['KivuNova', 'HandyRwanda'], level: 'proficient' },
     ],
   },
   {
@@ -41,13 +47,13 @@ const CATEGORIES: Category[] = [
     icon: Database,
     color: 'secondary',
     skills: [
-      { name: 'Node.js',      usedIn: ['eChat', 'Resume Builder', 'Portfolio'],     level: 'core' },
-      { name: 'FastAPI',      usedIn: ['HandyRwanda', 'INZIRA EDRPS'],              level: 'core' },
-      { name: 'Express',      usedIn: ['eChat', 'Portfolio API'],                   level: 'core' },
-      { name: 'PostgreSQL',   usedIn: ['HandyRwanda', 'KivuNova'],                  level: 'core' },
-      { name: 'MongoDB',      usedIn: ['eChat'],                                    level: 'proficient' },
-      { name: 'Redis',        usedIn: ['Resume Builder', 'HandyRwanda'],            level: 'proficient' },
-      { name: 'GraphQL',      usedIn: ['KivuNova'],                                 level: 'proficient' },
+      { name: 'Node.js', usedIn: ['eChat', 'Resume Builder', 'Portfolio'], level: 'core' },
+      { name: 'FastAPI', usedIn: ['HandyRwanda', 'INZIRA EDRPS'], level: 'core' },
+      { name: 'Express', usedIn: ['eChat', 'Portfolio API'], level: 'core' },
+      { name: 'PostgreSQL', usedIn: ['HandyRwanda', 'KivuNova'], level: 'core' },
+      { name: 'MongoDB', usedIn: ['eChat'], level: 'proficient' },
+      { name: 'Redis', usedIn: ['Resume Builder', 'HandyRwanda'], level: 'proficient' },
+      { name: 'GraphQL', usedIn: ['KivuNova'], level: 'proficient' },
     ],
   },
   {
@@ -55,12 +61,12 @@ const CATEGORIES: Category[] = [
     icon: Brain,
     color: 'accent',
     skills: [
-      { name: 'Python',       usedIn: ['HandyRwanda', 'INZIRA EDRPS', 'AI Wardrobe'], level: 'core' },
-      { name: 'scikit-learn', usedIn: ['HandyRwanda earnings', 'INZIRA EDRPS'],       level: 'core' },
-      { name: 'XGBoost',      usedIn: ['INZIRA EDRPS'],                               level: 'proficient' },
-      { name: 'TensorFlow',   usedIn: ['AI Wardrobe'],                                level: 'proficient' },
-      { name: 'Pandas/NumPy', usedIn: ['HandyRwanda', 'INZIRA EDRPS'],               level: 'core' },
-      { name: 'SHAP',         usedIn: ['INZIRA EDRPS explainability'],                level: 'proficient' },
+      { name: 'Python', usedIn: ['HandyRwanda', 'INZIRA EDRPS', 'AI Wardrobe'], level: 'core' },
+      { name: 'scikit-learn', usedIn: ['HandyRwanda earnings', 'INZIRA EDRPS'], level: 'core' },
+      { name: 'XGBoost', usedIn: ['INZIRA EDRPS'], level: 'proficient' },
+      { name: 'TensorFlow', usedIn: ['AI Wardrobe'], level: 'proficient' },
+      { name: 'Pandas/NumPy', usedIn: ['HandyRwanda', 'INZIRA EDRPS'], level: 'core' },
+      { name: 'SHAP', usedIn: ['INZIRA EDRPS explainability'], level: 'proficient' },
     ],
   },
   {
@@ -68,8 +74,8 @@ const CATEGORIES: Category[] = [
     icon: Smartphone,
     color: 'primary',
     skills: [
-      { name: 'React Native', usedIn: ['HandyRwanda mobile app'],  level: 'proficient' },
-      { name: 'Expo',         usedIn: ['HandyRwanda mobile app'],  level: 'proficient' },
+      { name: 'React Native', usedIn: ['HandyRwanda mobile app'], level: 'proficient' },
+      { name: 'Expo', usedIn: ['HandyRwanda mobile app'], level: 'proficient' },
     ],
   },
   {
@@ -77,10 +83,10 @@ const CATEGORIES: Category[] = [
     icon: Cloud,
     color: 'secondary',
     skills: [
-      { name: 'Docker',       usedIn: ['eChat', 'HandyRwanda', 'Portfolio'],  level: 'proficient' },
-      { name: 'GitHub Actions', usedIn: ['HandyRwanda CI', 'Portfolio CI'],   level: 'proficient' },
-      { name: 'Vercel',       usedIn: ['Resume Builder', 'Portfolio'],        level: 'proficient' },
-      { name: 'Nginx',        usedIn: ['Portfolio Docker'],                   level: 'proficient' },
+      { name: 'Docker', usedIn: ['eChat', 'HandyRwanda', 'Portfolio'], level: 'proficient' },
+      { name: 'GitHub Actions', usedIn: ['HandyRwanda CI', 'Portfolio CI'], level: 'proficient' },
+      { name: 'Vercel', usedIn: ['Resume Builder', 'Portfolio'], level: 'proficient' },
+      { name: 'Nginx', usedIn: ['Portfolio Docker'], level: 'proficient' },
     ],
   },
   {
@@ -88,32 +94,32 @@ const CATEGORIES: Category[] = [
     icon: Terminal,
     color: 'accent',
     skills: [
-      { name: 'Git',          usedIn: ['Every project'],                  level: 'core' },
-      { name: 'Zod',          usedIn: ['HandyRwanda', 'Portfolio API'],   level: 'proficient' },
-      { name: 'Prisma',       usedIn: ['Portfolio API'],                  level: 'proficient' },
-      { name: 'Vite',         usedIn: ['Portfolio', 'HandyRwanda'],       level: 'core' },
+      { name: 'Git', usedIn: ['Every project'], level: 'core' },
+      { name: 'Zod', usedIn: ['HandyRwanda', 'Portfolio API'], level: 'proficient' },
+      { name: 'Prisma', usedIn: ['Portfolio API'], level: 'proficient' },
+      { name: 'Vite', usedIn: ['Portfolio', 'HandyRwanda'], level: 'core' },
     ],
   },
 ];
 
 const CURRENTLY_LEARNING = [
-  { name: 'Rust (NAPI-RS)',   why: 'Native audio engine for Zovyra media player' },
-  { name: 'WebGPU',           why: 'Next-gen browser graphics for immersive portfolios' },
-  { name: 'Turborepo',        why: 'Monorepo tooling for multi-domain SaaS HR platform' },
+  { name: 'Rust (NAPI-RS)', why: 'Native audio engine for Zovyra media player' },
+  { name: 'WebGPU', why: 'Next-gen browser graphics for immersive portfolios' },
+  { name: 'Turborepo', why: 'Monorepo tooling for multi-domain SaaS HR platform' },
 ];
 
 const LEVEL_DOT: Record<Skill['level'], string> = {
-  core:       'bg-primary',
+  core: 'bg-primary',
   proficient: 'bg-primary/60',
-  learning:   'bg-muted-foreground/40',
+  learning: 'bg-muted-foreground/40',
 };
 
 const CERTIFICATIONS = [
-  { name: 'Scientific Computing with Python',          year: '2023', issuer: 'freeCodeCamp' },
-  { name: 'TensorFlow Developer',                      year: '2023', issuer: 'Google'        },
-  { name: 'Back End Development & APIs',               year: '2024', issuer: 'freeCodeCamp' },
-  { name: 'JavaScript Algorithms & Data Structures',   year: '2023', issuer: 'freeCodeCamp' },
-  { name: 'Data Analysis with Python',                 year: '2025', issuer: 'freeCodeCamp' },
+  { name: 'Scientific Computing with Python', year: '2023', issuer: 'freeCodeCamp' },
+  { name: 'TensorFlow Developer', year: '2023', issuer: 'Google' },
+  { name: 'Back End Development & APIs', year: '2024', issuer: 'freeCodeCamp' },
+  { name: 'JavaScript Algorithms & Data Structures', year: '2023', issuer: 'freeCodeCamp' },
+  { name: 'Data Analysis with Python', year: '2025', issuer: 'freeCodeCamp' },
 ];
 
 function SkillBadge({ skill }: { skill: Skill }) {
@@ -149,8 +155,10 @@ function SkillBadge({ skill }: { skill: Skill }) {
         >
           <p className="text-xs font-semibold text-foreground mb-1">Used in:</p>
           <ul className="space-y-0.5">
-            {skill.usedIn.map(p => (
-              <li key={p} className="text-xs text-muted-foreground">{p}</li>
+            {skill.usedIn.map((p) => (
+              <li key={p} className="text-xs text-muted-foreground">
+                {p}
+              </li>
             ))}
           </ul>
           {/* Arrow */}
@@ -214,7 +222,7 @@ const Skills = () => {
                     <h3 className="font-semibold text-sm">{cat.title}</h3>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {cat.skills.map(skill => (
+                    {cat.skills.map((skill) => (
                       <SkillBadge key={skill.name} skill={skill} />
                     ))}
                   </div>
@@ -239,7 +247,7 @@ const Skills = () => {
                 Currently Learning
               </h3>
               <div className="flex flex-wrap gap-3">
-                {CURRENTLY_LEARNING.map(item => (
+                {CURRENTLY_LEARNING.map((item) => (
                   <div
                     key={item.name}
                     title={item.why}
@@ -251,7 +259,9 @@ const Skills = () => {
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground/60 mt-3">Hover to see why I'm learning each one.</p>
+              <p className="text-xs text-muted-foreground/60 mt-3">
+                Hover to see why I'm learning each one.
+              </p>
             </CardContent>
           </Card>
         </motion.div>
@@ -275,7 +285,10 @@ const Skills = () => {
               >
                 <Card className="bg-gradient-card border-border/50 hover-lift">
                   <CardContent className="p-4 flex items-start gap-3">
-                    <Badge variant="outline" className="shrink-0 border-primary/40 text-primary text-xs">
+                    <Badge
+                      variant="outline"
+                      className="shrink-0 border-primary/40 text-primary text-xs"
+                    >
                       {cert.year}
                     </Badge>
                     <div>

@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { HelmetProvider } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import LoadingScreen from '@/components/LoadingScreen';
@@ -30,9 +29,16 @@ function SectionFallback() {
 
 // Konami code: ↑↑↓↓←→←→BA
 const KONAMI = [
-  'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
-  'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
-  'b','a',
+  'ArrowUp',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowLeft',
+  'ArrowRight',
+  'b',
+  'a',
 ];
 
 function useKonamiCode(callback: () => void) {
@@ -93,14 +99,28 @@ function PortfolioContent() {
       <Navigation />
       <main id="main-content">
         <Hero />
-        <Suspense fallback={<SectionFallback />}><About /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Projects /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Skills /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Testimonials /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Experience /></Suspense>
-        <Suspense fallback={<SectionFallback />}><Contact /></Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Projects />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Skills />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Testimonials />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Experience />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Contact />
+        </Suspense>
       </main>
-      <Suspense fallback={null}><Footer /></Suspense>
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
       {/* Terminal easter egg */}
       <AnimatePresence>
         {terminalOpen && (
@@ -118,15 +138,13 @@ const Index = () => {
   const handleLoadComplete = useCallback(() => setLoading(false), []);
 
   return (
-    <HelmetProvider>
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <LoadingScreen key="loader" onComplete={handleLoadComplete} />
-        ) : (
-          <PortfolioContent key="portfolio" />
-        )}
-      </AnimatePresence>
-    </HelmetProvider>
+    <AnimatePresence mode="wait">
+      {loading ? (
+        <LoadingScreen key="loader" onComplete={handleLoadComplete} />
+      ) : (
+        <PortfolioContent key="portfolio" />
+      )}
+    </AnimatePresence>
   );
 };
 

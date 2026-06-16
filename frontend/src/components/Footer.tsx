@@ -1,24 +1,57 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Code, Coffee, Terminal, Github, Linkedin, Twitter, Mail, Download, Clock, MapPin, Rss } from 'lucide-react';
+import {
+  Heart,
+  Code,
+  Coffee,
+  Terminal,
+  Github,
+  Linkedin,
+  Twitter,
+  Mail,
+  Download,
+  Clock,
+  MapPin,
+  Rss,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { track } from '@/lib/analytics';
 
 const QUICK_LINKS = [
-  { label: 'About',      href: '#about',      external: false },
-  { label: 'Projects',   href: '#projects',   external: false },
-  { label: 'Skills',     href: '#skills',     external: false },
+  { label: 'About', href: '#about', external: false },
+  { label: 'Projects', href: '#projects', external: false },
+  { label: 'Skills', href: '#skills', external: false },
   { label: 'Experience', href: '#experience', external: false },
-  { label: 'Contact',    href: '#contact',    external: false },
+  { label: 'Contact', href: '#contact', external: false },
 ];
 
 const SOCIAL = [
-  { Icon: Github,   href: 'https://github.com/enockuwumukiza',                  label: 'GitHub',   event: 'github_click'   as const },
-  { Icon: Linkedin, href: 'https://linkedin.com/in/enock-uwumukiza-3086082b4',  label: 'LinkedIn', event: 'linkedin_click' as const },
-  { Icon: Twitter,  href: 'https://twitter.com/enochrw7',                       label: 'Twitter',  event: 'github_click'   as const },
-  { Icon: Mail,     href: 'mailto:wwwenockuwumukiza@gmail.com',                 label: 'Email',    event: 'email_click'    as const },
+  {
+    Icon: Github,
+    href: 'https://github.com/enockuwumukiza',
+    label: 'GitHub',
+    event: 'github_click' as const,
+  },
+  {
+    Icon: Linkedin,
+    href: 'https://linkedin.com/in/enock-uwumukiza-3086082b4',
+    label: 'LinkedIn',
+    event: 'linkedin_click' as const,
+  },
+  {
+    Icon: Twitter,
+    href: 'https://twitter.com/enochrw7',
+    label: 'Twitter',
+    event: 'github_click' as const,
+  },
+  {
+    Icon: Mail,
+    href: 'mailto:wwwenockuwumukiza@gmail.com',
+    label: 'Email',
+    event: 'email_click' as const,
+  },
 ];
 
 function KigaliClock() {
@@ -26,13 +59,15 @@ function KigaliClock() {
 
   useEffect(() => {
     const update = () => {
-      setTime(new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Africa/Kigali',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      }).format(new Date()));
+      setTime(
+        new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Africa/Kigali',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+        }).format(new Date())
+      );
     };
     update();
     const id = setInterval(update, 1000);
@@ -89,7 +124,8 @@ const Footer = () => {
             viewport={{ once: true }}
             className="text-muted-foreground max-w-md mx-auto"
           >
-            Whether it's a product, a contract role, or just a good technical conversation — I'm reachable.
+            Whether it's a product, a contract role, or just a good technical conversation — I'm
+            reachable.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -108,7 +144,10 @@ const Footer = () => {
               download
               onClick={() => track('resume_download', { context: 'footer' })}
             >
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+              <Button
+                variant="outline"
+                className="border-primary/40 text-primary hover:bg-primary/10"
+              >
                 <Download className="mr-2 h-4 w-4" />
                 Download Resume
               </Button>
@@ -136,12 +175,12 @@ const Footer = () => {
           >
             <h3 className="text-2xl font-display font-bold gradient-text">EU.</h3>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Full-Stack Developer & ML Engineer from Kigali, Rwanda. Building for the world, one sprint at a time.
+              Full-Stack Developer & ML Engineer from Kigali, Rwanda. Building for the world, one
+              sprint at a time.
             </p>
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <MapPin className="h-3.5 w-3.5 text-primary" />
-              Kigali, Rwanda 🇷🇼 ·{' '}
-              <KigaliClock />
+              Kigali, Rwanda 🇷🇼 · <KigaliClock />
             </div>
             <div className="flex gap-3">
               {SOCIAL.map(({ Icon, href, label, event }) => (
@@ -167,10 +206,12 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">Navigation</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+              Navigation
+            </h4>
             <nav aria-label="Footer navigation">
               <ul className="space-y-2">
-                {QUICK_LINKS.map(link => (
+                {QUICK_LINKS.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
@@ -210,11 +251,13 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">Fun Facts</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+              Fun Facts
+            </h4>
             <div className="space-y-3">
               {[
-                { Icon: Code,     text: '50,000+ lines of code shipped' },
-                { Icon: Coffee,   text: 'Powered by Rwandan coffee ☕' },
+                { Icon: Code, text: '50,000+ lines of code shipped' },
+                { Icon: Coffee, text: 'Powered by Rwandan coffee ☕' },
                 { Icon: Terminal, text: 'Try Ctrl+` for a terminal 👀' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="flex items-center gap-2.5 text-sm text-muted-foreground">

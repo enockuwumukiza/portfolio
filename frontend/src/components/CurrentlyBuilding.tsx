@@ -23,12 +23,18 @@ const STORAGE_KEY = 'portfolio_currently_building_dismissed_v2';
 
 export default function CurrentlyBuilding() {
   const [dismissed, setDismissed] = useState<boolean>(() => {
-    try { return localStorage.getItem(STORAGE_KEY) === 'true'; } catch { return false; }
+    try {
+      return localStorage.getItem(STORAGE_KEY) === 'true';
+    } catch {
+      return false;
+    }
   });
   const [buildIdx, setBuildIdx] = useState(0);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => setBuildIdx((i) => (i + 1) % BUILDS.length), 4500);
@@ -37,7 +43,11 @@ export default function CurrentlyBuilding() {
 
   const dismiss = () => {
     setDismissed(true);
-    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch { /* storage unavailable */ }
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+    } catch {
+      /* storage unavailable */
+    }
   };
 
   const build = BUILDS[buildIdx];

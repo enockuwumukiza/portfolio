@@ -78,11 +78,7 @@ export const trackEvent = async (
   }
 };
 
-export const getStats = async (
-  _req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+export const getStats = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const db = await getPrisma();
 
@@ -106,7 +102,9 @@ export const getStats = async (
         acc[e.event] = (acc[e.event] || 0) + 1;
         return acc;
       }, {});
-      res.status(200).json({ status: 'success', data: counts, total: eventLog.length, source: 'memory' });
+      res
+        .status(200)
+        .json({ status: 'success', data: counts, total: eventLog.length, source: 'memory' });
     }
   } catch (err) {
     next(err);

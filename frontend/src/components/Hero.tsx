@@ -8,11 +8,11 @@ import { track } from '@/lib/analytics';
 
 // ─── Deterministic orb positions — zero Math.random() in render ───────────────
 const ORB_POSITIONS = [
-  { left: '8%',  top: '18%', size: 320, delay: 0,   duration: 9  },
+  { left: '8%', top: '18%', size: 320, delay: 0, duration: 9 },
   { left: '70%', top: '12%', size: 280, delay: 1.5, duration: 11 },
-  { left: '15%', top: '68%', size: 200, delay: 0.8, duration: 8  },
+  { left: '15%', top: '68%', size: 200, delay: 0.8, duration: 8 },
   { left: '78%', top: '62%', size: 240, delay: 2.2, duration: 10 },
-  { left: '48%', top: '80%', size: 160, delay: 1.1, duration: 7  },
+  { left: '48%', top: '80%', size: 160, delay: 1.1, duration: 7 },
 ];
 
 const ORB_COLORS = [
@@ -86,16 +86,22 @@ function MagneticButton({
   const springX = useSpring(x, { stiffness: 300, damping: 20 });
   const springY = useSpring(y, { stiffness: 300, damping: 20 });
 
-  const onMove = useCallback((e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    x.set((e.clientX - cx) * 0.25);
-    y.set((e.clientY - cy) * 0.25);
-  }, [x, y]);
+  const onMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      x.set((e.clientX - cx) * 0.25);
+      y.set((e.clientY - cy) * 0.25);
+    },
+    [x, y]
+  );
 
-  const onLeave = useCallback(() => { x.set(0); y.set(0); }, [x, y]);
+  const onLeave = useCallback(() => {
+    x.set(0);
+    y.set(0);
+  }, [x, y]);
 
   return (
     <motion.button
@@ -132,9 +138,24 @@ function CountBadge({ value, label }: { value: string; label: string }) {
 
 // ─── Social links ─────────────────────────────────────────────────────────────
 const SOCIAL_LINKS = [
-  { Icon: Github,   href: 'https://github.com/enockuwumukiza',                  label: 'GitHub',   event: 'github_click'   as const },
-  { Icon: Linkedin, href: 'https://linkedin.com/in/enock-uwumukiza-3086082b4', label: 'LinkedIn', event: 'linkedin_click' as const },
-  { Icon: Mail,     href: 'mailto:wwwenockuwumukiza@gmail.com',                 label: 'Email',    event: 'email_click'    as const },
+  {
+    Icon: Github,
+    href: 'https://github.com/enockuwumukiza',
+    label: 'GitHub',
+    event: 'github_click' as const,
+  },
+  {
+    Icon: Linkedin,
+    href: 'https://linkedin.com/in/enock-uwumukiza-3086082b4',
+    label: 'LinkedIn',
+    event: 'linkedin_click' as const,
+  },
+  {
+    Icon: Mail,
+    href: 'mailto:wwwenockuwumukiza@gmail.com',
+    label: 'Email',
+    event: 'email_click' as const,
+  },
 ];
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
@@ -146,8 +167,14 @@ const Hero = () => {
   // Parallax tilt on mouse move
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const tiltX = useSpring(useTransform(mouseY, [-300, 300], [4, -4]), { stiffness: 60, damping: 20 });
-  const tiltY = useSpring(useTransform(mouseX, [-300, 300], [-4, 4]), { stiffness: 60, damping: 20 });
+  const tiltX = useSpring(useTransform(mouseY, [-300, 300], [4, -4]), {
+    stiffness: 60,
+    damping: 20,
+  });
+  const tiltY = useSpring(useTransform(mouseX, [-300, 300], [-4, 4]), {
+    stiffness: 60,
+    damping: 20,
+  });
 
   useEffect(() => {
     if (prefersReduced) return;
@@ -162,47 +189,53 @@ const Hero = () => {
   }, [mouseX, mouseY, prefersReduced]);
 
   // tsParticles options — amber constellation
-  const particlesOptions: ISourceOptions = useMemo(() => ({
-    fullScreen: { enable: false },
-    background: { color: { value: 'transparent' } },
-    fpsLimit: 60,
-    interactivity: {
-      events: {
-        onHover: { enable: !prefersReduced, mode: ['grab', 'bubble'] },
-        onClick: { enable: false },
-        resize: { enable: true },
+  const particlesOptions: ISourceOptions = useMemo(
+    () => ({
+      fullScreen: { enable: false },
+      background: { color: { value: 'transparent' } },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onHover: { enable: !prefersReduced, mode: ['grab', 'bubble'] },
+          onClick: { enable: false },
+          resize: { enable: true },
+        },
+        modes: {
+          grab: { distance: 180, links: { opacity: 0.6 } },
+          bubble: { distance: 120, size: 5, duration: 0.3, opacity: 0.8 },
+        },
       },
-      modes: {
-        grab: { distance: 180, links: { opacity: 0.6 } },
-        bubble: { distance: 120, size: 5, duration: 0.3, opacity: 0.8 },
+      particles: {
+        color: { value: ['#F5A623', '#C4501A', '#F5F2EE'] },
+        links: {
+          color: '#F5A623',
+          distance: 160,
+          enable: true,
+          opacity: 0.12,
+          width: 1,
+          triangles: { enable: false },
+        },
+        move: {
+          enable: !prefersReduced,
+          speed: 0.5,
+          direction: 'none',
+          random: true,
+          straight: false,
+          outModes: { default: 'bounce' },
+          attract: { enable: true, rotate: { x: 600, y: 1200 } },
+        },
+        number: { density: { enable: true, area: 1000 }, value: 70 },
+        opacity: {
+          value: { min: 0.2, max: 0.5 },
+          animation: { enable: true, speed: 0.8, minimumValue: 0.1 },
+        },
+        shape: { type: 'circle' },
+        size: { value: { min: 1, max: 2.5 } },
       },
-    },
-    particles: {
-      color: { value: ['#F5A623', '#C4501A', '#F5F2EE'] },
-      links: {
-        color: '#F5A623',
-        distance: 160,
-        enable: true,
-        opacity: 0.12,
-        width: 1,
-        triangles: { enable: false },
-      },
-      move: {
-        enable: !prefersReduced,
-        speed: 0.5,
-        direction: 'none',
-        random: true,
-        straight: false,
-        outModes: { default: 'bounce' },
-        attract: { enable: true, rotate: { x: 600, y: 1200 } },
-      },
-      number: { density: { enable: true, area: 1000 }, value: 70 },
-      opacity: { value: { min: 0.2, max: 0.5 }, animation: { enable: true, speed: 0.8, minimumValue: 0.1 } },
-      shape: { type: 'circle' },
-      size: { value: { min: 1, max: 2.5 } },
-    },
-    detectRetina: true,
-  }), [prefersReduced]);
+      detectRetina: true,
+    }),
+    [prefersReduced]
+  );
 
   const handleParticlesInit = async (engine: Engine) => {
     if (!particlesInit.current) {
@@ -250,7 +283,10 @@ const Hero = () => {
       )}
 
       {/* ── Layer 1: Animated grid ── */}
-      <div className="absolute inset-0 z-[1] opacity-[0.06] grid-bg animate-grid-flow" aria-hidden="true" />
+      <div
+        className="absolute inset-0 z-[1] opacity-[0.06] grid-bg animate-grid-flow"
+        aria-hidden="true"
+      />
 
       {/* ── Layer 2: Warm depth orbs ── */}
       <div className="absolute inset-0 z-[1] pointer-events-none" aria-hidden="true">
@@ -266,11 +302,15 @@ const Hero = () => {
               background: ORB_COLORS[i],
               filter: 'blur(60px)',
             }}
-            animate={prefersReduced ? {} : {
-              y: [0, -24, 0],
-              scale: [1, 1.08, 1],
-              opacity: [0.7, 1, 0.7],
-            }}
+            animate={
+              prefersReduced
+                ? {}
+                : {
+                    y: [0, -24, 0],
+                    scale: [1, 1.08, 1],
+                    opacity: [0.7, 1, 0.7],
+                  }
+            }
             transition={{
               duration: orb.duration,
               delay: orb.delay,
@@ -285,7 +325,8 @@ const Hero = () => {
       <div
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 50%, hsl(37 91% 55% / 0.08) 0%, transparent 70%)',
+          background:
+            'radial-gradient(ellipse 80% 60% at 50% 50%, hsl(37 91% 55% / 0.08) 0%, transparent 70%)',
         }}
         aria-hidden="true"
       />
@@ -293,7 +334,9 @@ const Hero = () => {
       {/* ── Layer 4: Perspective tilt wrapper ── */}
       <motion.div
         className="container mx-auto px-4 relative z-10 flex flex-col items-center"
-        style={prefersReduced ? {} : { rotateX: tiltX, rotateY: tiltY, transformStyle: 'preserve-3d' }}
+        style={
+          prefersReduced ? {} : { rotateX: tiltX, rotateY: tiltY, transformStyle: 'preserve-3d' }
+        }
       >
         {/* ── Status chip ── */}
         <motion.div
@@ -351,8 +394,8 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.7 }}
         >
-          I build full-stack products and intelligent systems — from service marketplaces
-          to clinical AI — that solve real problems for real people.
+          I build full-stack products and intelligent systems — from service marketplaces to
+          clinical AI — that solve real problems for real people.
         </motion.p>
 
         {/* ── CTA pair ── */}
@@ -464,8 +507,8 @@ const Hero = () => {
               className="text-primary hover:underline font-medium"
             >
               HandyRwanda
-            </a>
-            {' '}— Sprint 7 shipped voice messaging
+            </a>{' '}
+            — Sprint 7 shipped voice messaging
           </span>
         </motion.div>
       </motion.div>
@@ -497,7 +540,9 @@ const Hero = () => {
       {/* ── Decorative horizontal line at bottom ── */}
       <div
         className="absolute bottom-0 left-0 right-0 h-px z-10"
-        style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--border)), transparent)' }}
+        style={{
+          background: 'linear-gradient(90deg, transparent, hsl(var(--border)), transparent)',
+        }}
         aria-hidden="true"
       />
     </section>

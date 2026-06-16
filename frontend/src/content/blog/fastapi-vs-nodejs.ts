@@ -1,6 +1,6 @@
 export const post = {
   slug: 'fastapi-vs-nodejs',
-  title: 'Why I Chose FastAPI Over Node.js for HandyRwanda\'s Backend',
+  title: "Why I Chose FastAPI Over Node.js for HandyRwanda's Backend",
   excerpt:
     'A pragmatic comparison from someone who has shipped both in production — not benchmarks, but real trade-offs on a real project with real constraints.',
   date: '2026-04-05',

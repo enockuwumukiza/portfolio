@@ -29,7 +29,7 @@ const TESTIMONIALS = [
   {
     id: 3,
     quote:
-      "The ML pipeline Enock built for INZIRA EDRPS was well-documented and reproducible from day one — a rare quality in projects of that scale.",
+      'The ML pipeline Enock built for INZIRA EDRPS was well-documented and reproducible from day one — a rare quality in projects of that scale.',
     author: 'Research Collaborator',
     role: 'ML project, INZIRA EDRPS',
     avatar: null,
@@ -87,7 +87,9 @@ function RepoCard({ repo }: { repo: Repo }) {
             </div>
             {repo.language && (
               <div className="flex items-center gap-1.5 flex-shrink-0">
-                <span className={`w-2.5 h-2.5 rounded-full ${LANG_COLOR[repo.language] ?? 'bg-muted-foreground/50'}`} />
+                <span
+                  className={`w-2.5 h-2.5 rounded-full ${LANG_COLOR[repo.language] ?? 'bg-muted-foreground/50'}`}
+                />
                 <span className="text-[11px] text-muted-foreground">{repo.language}</span>
               </div>
             )}
@@ -102,7 +104,11 @@ function RepoCard({ repo }: { repo: Repo }) {
           {repo.topics.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {repo.topics.slice(0, 3).map((t) => (
-                <Badge key={t} variant="outline" className="text-[10px] px-1.5 py-0 border-border/50 text-muted-foreground/70">
+                <Badge
+                  key={t}
+                  variant="outline"
+                  className="text-[10px] px-1.5 py-0 border-border/50 text-muted-foreground/70"
+                >
                   {t}
                 </Badge>
               ))}
@@ -147,7 +153,9 @@ function TestimonialCarousel() {
 
   useEffect(() => {
     startTimer();
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, []);
 
   const navigate = (newDir: 1 | -1) => {
@@ -206,7 +214,10 @@ function TestimonialCarousel() {
           {TESTIMONIALS.map((_, i) => (
             <button
               key={i}
-              onClick={() => { setDir(i > idx ? 1 : -1); setIdx(i); }}
+              onClick={() => {
+                setDir(i > idx ? 1 : -1);
+                setIdx(i);
+              }}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 i === idx ? 'w-6 bg-primary' : 'w-1.5 bg-muted-foreground/30'
               }`}
@@ -257,13 +268,20 @@ export default function Testimonials() {
           const r = await fetch(`${API_URL}/github/repos`);
           if (r.ok) {
             const body = await r.json();
-            if (Array.isArray(body.repos)) { data = body.repos; ok = true; }
+            if (Array.isArray(body.repos)) {
+              data = body.repos;
+              ok = true;
+            }
           }
-        } catch { /* proxy unavailable */ }
+        } catch {
+          /* proxy unavailable */
+        }
 
         if (!ok) {
           // Fall back to direct GitHub API
-          const r = await fetch('https://api.github.com/users/enockuwumukiza/repos?type=public&sort=pushed&per_page=20');
+          const r = await fetch(
+            'https://api.github.com/users/enockuwumukiza/repos?type=public&sort=pushed&per_page=20'
+          );
           if (r.ok) {
             const raw = await r.json();
             data = raw.map((repo: Record<string, unknown>) => ({
@@ -290,7 +308,9 @@ export default function Testimonials() {
     }
 
     fetchRepos();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (

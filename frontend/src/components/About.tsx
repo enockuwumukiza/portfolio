@@ -12,28 +12,38 @@ const TIMELINE = [
     period: '2025 – Present',
     role: 'Full-Stack Developer & ML Engineer',
     context: 'Freelance & Open Source · Kigali, Rwanda',
-    achievement: 'Built HandyRwanda (Sprint 7), INZIRA EDRPS clinical AI, and KivuNova SaaS — all solo.',
+    achievement:
+      'Built HandyRwanda (Sprint 7), INZIRA EDRPS clinical AI, and KivuNova SaaS — all solo.',
     icon: Cpu,
   },
   {
     period: '2024',
     role: 'Backend & Integrations',
     context: 'Self-directed projects',
-    achievement: 'Shipped full Socket.IO migration across 3 layers, MTN MoMo/Airtel Money payments, Expo push notifications.',
+    achievement:
+      'Shipped full Socket.IO migration across 3 layers, MTN MoMo/Airtel Money payments, Expo push notifications.',
     icon: Code,
   },
   {
     period: '2022 – 2023',
     role: 'Biomedical Laboratory Sciences Student',
     context: 'INES Ruhengeri · Rwanda Military Hospital (internship)',
-    achievement: 'Collected clinical data for AI research at RMH, started INZIRA EDRPS targeting 5 disease modules.',
+    achievement:
+      'Collected clinical data for AI research at RMH, started INZIRA EDRPS targeting 5 disease modules.',
     icon: Rocket,
   },
 ];
 
 const BADGE_GROUPS = [
-  { label: 'Languages',   items: ['TypeScript', 'Python', 'JavaScript', 'Rust (learning)'] },
-  { label: 'Currently',   items: ['🚧 HandyRwanda — Sprint 7 shipped', '📖 Turborepo MFE architecture', '🔬 INZIRA EDRPS clinical AI'] },
+  { label: 'Languages', items: ['TypeScript', 'Python', 'JavaScript', 'Rust (learning)'] },
+  {
+    label: 'Currently',
+    items: [
+      '🚧 HandyRwanda — Sprint 7 shipped',
+      '📖 Turborepo MFE architecture',
+      '🔬 INZIRA EDRPS clinical AI',
+    ],
+  },
 ];
 
 const badgeContainerVariants = {
@@ -62,13 +72,26 @@ function useCountUp(target: number, trigger: boolean, duration = 1200) {
   return count;
 }
 
-function AnimatedStat({ value, label, suffix = '+' }: { value: number; label: string; suffix?: string }) {
+function AnimatedStat({
+  value,
+  label,
+  suffix = '+',
+}: {
+  value: number;
+  label: string;
+  suffix?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const count = useCountUp(value, visible);
 
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.5 });
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.5 }
+    );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
@@ -76,7 +99,8 @@ function AnimatedStat({ value, label, suffix = '+' }: { value: number; label: st
   return (
     <div ref={ref} className="text-center">
       <div className="text-3xl font-display font-bold text-primary tabular-nums">
-        {count}{suffix}
+        {count}
+        {suffix}
       </div>
       <div className="text-xs text-muted-foreground mt-1">{label}</div>
     </div>
@@ -99,8 +123,9 @@ const About = () => {
             About Me
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            I'm a self-taught full-stack developer and biomedical sciences student from Kigali, Rwanda.
-            I build end-to-end products — marketplaces, clinical AI, SaaS — alone, from scratch, at sprint pace.
+            I'm a self-taught full-stack developer and biomedical sciences student from Kigali,
+            Rwanda. I build end-to-end products — marketplaces, clinical AI, SaaS — alone, from
+            scratch, at sprint pace.
           </p>
         </motion.div>
 
@@ -135,7 +160,9 @@ const About = () => {
                     <time className="text-xs font-mono text-muted-foreground">{item.period}</time>
                     <h4 className="font-semibold text-sm mt-0.5">{item.role}</h4>
                     <p className="text-xs text-muted-foreground">{item.context}</p>
-                    <p className="text-sm text-muted-foreground/80 mt-2 leading-relaxed">{item.achievement}</p>
+                    <p className="text-sm text-muted-foreground/80 mt-2 leading-relaxed">
+                      {item.achievement}
+                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -153,14 +180,14 @@ const About = () => {
             {/* Quick stats */}
             <Card className="bg-gradient-card border-border/50">
               <CardContent className="p-6 grid grid-cols-3 gap-4 divide-x divide-border/40">
-                <AnimatedStat value={3}  label="Years building"   />
+                <AnimatedStat value={3} label="Years building" />
                 <AnimatedStat value={10} label="Projects shipped" />
-                <AnimatedStat value={5}  label="Active projects"  />
+                <AnimatedStat value={5} label="Active projects" />
               </CardContent>
             </Card>
 
             {/* Badge groups */}
-            {BADGE_GROUPS.map(group => (
+            {BADGE_GROUPS.map((group) => (
               <div key={group.label}>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
                   <Wrench className="h-3 w-3" /> {group.label}
@@ -172,9 +199,12 @@ const About = () => {
                   viewport={{ once: true }}
                   className="flex flex-wrap gap-2"
                 >
-                  {group.items.map(item => (
+                  {group.items.map((item) => (
                     <motion.div key={item} variants={badgeItemVariants}>
-                      <Badge variant="secondary" className="bg-muted/20 text-foreground border-border/40 text-xs">
+                      <Badge
+                        variant="secondary"
+                        className="bg-muted/20 text-foreground border-border/40 text-xs"
+                      >
                         {item}
                       </Badge>
                     </motion.div>
@@ -196,8 +226,9 @@ const About = () => {
           <Card className="bg-gradient-card border-primary/20 max-w-3xl mx-auto">
             <CardContent className="p-8 text-center">
               <blockquote className="text-lg italic text-muted-foreground leading-relaxed">
-                "I grew up in Rwanda, where access to quality tech infrastructure is a daily constraint.
-                That taught me to build lean, ship fast, and make things that work even in the hardest conditions."
+                "I grew up in Rwanda, where access to quality tech infrastructure is a daily
+                constraint. That taught me to build lean, ship fast, and make things that work even
+                in the hardest conditions."
               </blockquote>
               <p className="text-sm text-primary mt-4 font-medium">— Enock Uwumukiza</p>
             </CardContent>

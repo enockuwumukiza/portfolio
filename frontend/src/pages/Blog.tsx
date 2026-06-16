@@ -24,10 +24,7 @@ export default function BlogListPage() {
   const featured = ALL_POSTS[0];
   const rest = ALL_POSTS.slice(1);
 
-  const allTags = useMemo(
-    () => Array.from(new Set(ALL_POSTS.flatMap((p) => p.tags))).sort(),
-    [],
-  );
+  const allTags = useMemo(() => Array.from(new Set(ALL_POSTS.flatMap((p) => p.tags))).sort(), []);
 
   return (
     <>
@@ -64,9 +61,7 @@ export default function BlogListPage() {
                 Writing
               </span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-display font-bold gradient-text mb-5">
-              Blog
-            </h1>
+            <h1 className="text-5xl md:text-6xl font-display font-bold gradient-text mb-5">Blog</h1>
             <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
               Technical deep-dives, sprint retrospectives, and honest reflections on building
               software from Kigali. No hot takes — only things I've actually shipped.
@@ -137,7 +132,9 @@ export default function BlogListPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-wrap gap-2 mb-10"
           >
-            <span className="text-xs text-muted-foreground self-center mr-1 font-mono">Topics:</span>
+            <span className="text-xs text-muted-foreground self-center mr-1 font-mono">
+              Topics:
+            </span>
             {allTags.map((tag) => (
               <span
                 key={tag}

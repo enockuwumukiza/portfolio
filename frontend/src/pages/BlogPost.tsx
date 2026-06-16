@@ -52,9 +52,7 @@ const mdComponents = {
     </h2>
   ),
   h3: ({ children }: { children?: React.ReactNode }) => (
-    <h3 className="text-xl font-display font-semibold text-foreground mt-8 mb-3">
-      {children}
-    </h3>
+    <h3 className="text-xl font-display font-semibold text-foreground mt-8 mb-3">{children}</h3>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
     <p className="text-base text-muted-foreground leading-[1.85] mb-5">{children}</p>
@@ -93,7 +91,15 @@ const mdComponents = {
     </blockquote>
   ),
   hr: () => <hr className="border-border/40 my-10" />,
-  code: ({ inline, className, children }: { inline?: boolean; className?: string; children?: React.ReactNode }) => {
+  code: ({
+    inline,
+    className,
+    children,
+  }: {
+    inline?: boolean;
+    className?: string;
+    children?: React.ReactNode;
+  }) => {
     if (inline) {
       return (
         <code className="px-1.5 py-0.5 rounded bg-muted/60 text-primary font-mono text-sm border border-border/30">
@@ -246,7 +252,10 @@ export default function BlogPostPage() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="prose-custom"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents as Record<string, React.ElementType>}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={mdComponents as Record<string, React.ElementType>}
+            >
               {post.content}
             </ReactMarkdown>
           </motion.article>
@@ -297,9 +306,7 @@ export default function BlogPostPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mt-16"
             >
-              <h2 className="text-xl font-display font-bold text-foreground mb-6">
-                Related posts
-              </h2>
+              <h2 className="text-xl font-display font-bold text-foreground mb-6">Related posts</h2>
               <div className="grid sm:grid-cols-2 gap-5">
                 {related.map((rp) => (
                   <Link
