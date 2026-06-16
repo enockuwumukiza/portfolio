@@ -10,6 +10,13 @@ export default {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  safelist: [
+    'bg-primary/8',
+    'hover:bg-primary/8',
+    'hover:bg-primary/6',
+    'bg-primary/6',
+    'duration-400',
+  ],
   theme: {
     container: {
       center: true,
@@ -96,6 +103,9 @@ export default {
       transitionTimingFunction: {
         smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
         spring: "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+      transitionDuration: {
+        '400': '400ms',
       },
       borderRadius: {
         lg: "var(--radius)",

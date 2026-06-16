@@ -276,3 +276,91 @@
   0% { opacity: 0; transform: translateY(24px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+
+/* ============ SPRINT 2 ADDITIONS ============ */
+
+@layer components {
+  /* Gradient shimmer text animation — for hero name */
+  .gradient-text-animated {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 50%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-sweep 4s linear infinite;
+  }
+
+  /* Ping animation for status dot */
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+  .animate-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Frosted glass nav on scroll */
+  .nav-frosted {
+    background: hsl(var(--background) / 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  /* Mobile menu clip animation */
+  .mobile-menu-clip {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* Hover shimmer for primary button */
+  .btn-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 60%
+    );
+    transform: translateX(-100%) skewX(-12deg);
+    transition: transform 0.7s ease;
+  }
+  .btn-shimmer:hover::after {
+    transform: translateX(200%) skewX(-12deg);
+  }
+
+  /* Perspective hero wrapper */
+  .hero-3d {
+    transform-style: preserve-3d;
+    perspective: 1200px;
+  }
+
+  /* Outline text style */
+  .text-outline {
+    -webkit-text-stroke: 1.5px hsl(var(--foreground) / 0.35);
+    color: transparent;
+  }
+
+  /* Nav active dot indicator (mobile) */
+  .nav-active-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+  }
+}
+
+@keyframes gradient-sweep {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+
+/* Smooth theme transitions — only on color props, not transform/opacity */
+body, nav, footer, header, section, article, aside, main {
+  transition: background-color 0.25s ease, border-color 0.2s ease;
+}
