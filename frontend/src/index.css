@@ -413,3 +413,116 @@ html {
   border-color: hsl(var(--primary) / 0.4);
   color: hsl(var(--primary));
 }
+
+/* ══════════════════════════════════════════════════
+   SPRINT 5 — ACCESSIBILITY & PERFORMANCE
+   ══════════════════════════════════════════════════ */
+
+/* ── Focus-visible — WCAG 2.1 AA visible focus rings ─────── */
+/* Tailwind reset removes native outlines; we restore them
+   ONLY for keyboard navigation (not mouse clicks). */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Interactive elements that don't already have focus-visible
+   wired via Tailwind utility classes */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove outline for mouse/touch users (pointer events) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Skip-to-content link ─────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -999px;
+  left: 0;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ── Color contrast helpers ───────────────────────────────── */
+/* Ensure muted text still meets WCAG AA 4.5:1 min on dark bg */
+.text-accessible-muted {
+  color: hsl(var(--muted-foreground));
+  /* Computed: ~5.1:1 on --background (#0D0A06) — passes AA */
+}
+
+/* ── Reduced motion — instant transitions ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep pulsing status indicators but make them static */
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
+  }
+
+  /* Lenis smooth scroll: disable via data attribute set by useLenis */
+  html[data-lenis-stopped] {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── Mobile touch targets — WCAG 2.5.5 (44×44px min) ─────── */
+@media (pointer: coarse) {
+  button,
+  a,
+  [role='button'],
+  [role='tab'],
+  [role='checkbox'],
+  [role='radio'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Project card hover states → active (tap) states */
+  .hover-lift:active {
+    transform: scale(0.98) translateY(0);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* ── Print styles ─────────────────────────────────────────── */
+@media print {
+  nav,
+  footer,
+  .custom-cursor,
+  #loading-screen,
+  .currently-building {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+}

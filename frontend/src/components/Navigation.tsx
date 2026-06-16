@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, PanInfo } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Download, Terminal, Sun, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import TerminalEmulator from './TerminalEmulator';
+
+const TerminalEmulator = lazy(() => import('./TerminalEmulator'));
 
 const NAV_ITEMS = [
   { name: 'About',      href: '#about',      external: false },
@@ -16,7 +17,7 @@ const NAV_ITEMS = [
 
 const SECTION_IDS = ['hero', 'about', 'projects', 'skills', 'experience', 'contact'];
 
-// ─── Lightweight theme hook — no next-themes dependency ──────────────────────
+// ─── Lightweight theme hook ───────────────────────────────────────────────────
 function useTheme() {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window === 'undefined') return 'dark';
@@ -59,7 +60,6 @@ function useActiveSection() {
           } else {
             ratioMap.current.delete(id);
           }
-          // Pick section with highest visible ratio
           let best = 'hero';
           let bestRatio = 0;
           ratioMap.current.forEach((ratio, sid) => {
@@ -87,49 +87,53 @@ const Navigation = () => {
   const { theme, toggle: toggleTheme } = useTheme();
   const activeSection = useActiveSection();
 
-  // Scroll progress bar at very top of viewport
   const { scrollYProgress } = useScroll();
   const progressScaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  // Blur background activates on scroll > 80px
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 80);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile on ESC
+  // Close on ESC
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsMobileOpen(false); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Lock body scroll when mobile menu open
+  // Lock body scroll when open
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [isMobileOpen]);
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = useCallback((href: string) => {
     setIsMobileOpen(false);
     const id = href.replace('#', '');
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, isMobileOpen ? 350 : 0);
+  }, [isMobileOpen]);
+
+  // Swipe-down or swipe-left to close mobile menu
+  const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (info.offset.y > 80 || info.offset.x < -80) {
+      setIsMobileOpen(false);
+    }
+  }, []);
 
   return (
     <>
-      {/* ── Scroll progress bar — fixed top-0, 2px height ── */}
+      {/* ── Scroll progress bar ── */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-[2px] z-[70] origin-left"
-        style={{
-          scaleX: progressScaleX,
-          background: 'var(--gradient-accent)',
-        }}
+        style={{ scaleX: progressScaleX, background: 'var(--gradient-accent)' }}
         aria-hidden="true"
       />
 
-      {/* ── Main nav bar ── */}
+      {/* ── Main nav ── */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -164,15 +168,13 @@ const Navigation = () => {
               </motion.span>
             </motion.a>
 
-            {/* ── Desktop nav links ── */}
+            {/* ── Desktop nav ── */}
             <div className="hidden md:flex items-center gap-1" role="list">
               {NAV_ITEMS.map(item => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
                 const sharedClass = `relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary`;
-                const colorStyle = {
-                  color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))',
-                };
+                const colorStyle = { color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))' };
                 const inner = (
                   <>
                     {item.name}
@@ -184,21 +186,11 @@ const Navigation = () => {
                         transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                       />
                     )}
-                    <motion.span
-                      className="absolute inset-0 rounded-md bg-primary/0 hover:bg-primary/6 transition-colors duration-200 -z-10"
-                      aria-hidden="true"
-                    />
                   </>
                 );
                 if (item.external) {
                   return (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      role="listitem"
-                      className={sharedClass}
-                      style={colorStyle}
-                    >
+                    <Link key={item.name} to={item.href} role="listitem" className={sharedClass} style={colorStyle}>
                       {inner}
                     </Link>
                   );
@@ -221,7 +213,6 @@ const Navigation = () => {
 
             {/* ── Desktop actions ── */}
             <div className="hidden md:flex items-center gap-1">
-              {/* Theme toggle */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -233,35 +224,29 @@ const Navigation = () => {
                   key={theme}
                   initial={{ rotate: -90, opacity: 0, scale: 0.7 }}
                   animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  transition={{ duration: 0.3 }}
                 >
                   {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </motion.div>
               </Button>
 
-              {/* Terminal easter egg */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowTerminal(true)}
                 className="text-muted-foreground hover:text-primary hover:bg-primary/8 font-mono text-xs"
-                aria-label="Open terminal"
+                aria-label="Open terminal easter egg (Ctrl+`)"
               >
-                <Terminal className="mr-1.5 h-3.5 w-3.5" />
+                <Terminal className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
                 <span className="hidden lg:inline">_terminal</span>
               </Button>
 
-              {/* Resume download */}
-              <a
-                href="/Enock_Resume.pdf"
-                download="Enock_Uwumukiza_Resume.pdf"
-                aria-label="Download Enock's resume"
-              >
+              <a href="/Enock_Resume.pdf" download="Enock_Uwumukiza_Resume.pdf" aria-label="Download Enock's resume PDF">
                 <Button
                   size="sm"
                   className="ml-1 bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-full font-medium"
                 >
-                  <Download className="mr-1.5 h-3.5 w-3.5" />
+                  <Download className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
                   Resume
                 </Button>
               </a>
@@ -289,23 +274,11 @@ const Navigation = () => {
               >
                 <AnimatePresence mode="wait" initial={false}>
                   {isMobileOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
                       <X className="h-6 w-6" />
                     </motion.div>
                   ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
                       <Menu className="h-6 w-6" />
                     </motion.div>
                   )}
@@ -317,31 +290,40 @@ const Navigation = () => {
         </div>
       </motion.nav>
 
-      {/* ── Mobile full-screen overlay ── */}
+      {/* ── Mobile full-screen overlay — swipe down or left to dismiss ── */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
             id="mobile-nav"
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.4 }}
+            onDragEnd={handleDragEnd}
             initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
             animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
             exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
             transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[50] bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[50] bg-background/98 backdrop-blur-xl flex flex-col items-center justify-center touch-none"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
           >
-            {/* Decorative amber gradient blob */}
+            {/* Swipe hint */}
+            <motion.div
+              className="absolute top-4 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-border/60"
+              aria-hidden="true"
+              animate={{ opacity: [0.4, 0.9, 0.4] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+
+            {/* Amber blob */}
             <div
               className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle, hsl(37 91% 55% / 0.08) 0%, transparent 70%)',
-                filter: 'blur(40px)',
-              }}
+              style={{ background: 'radial-gradient(circle, hsl(37 91% 55% / 0.08) 0%, transparent 70%)', filter: 'blur(40px)' }}
               aria-hidden="true"
             />
 
-            <nav className="relative flex flex-col items-center gap-2 w-full max-w-xs px-6">
+            <nav className="relative flex flex-col items-center gap-1 w-full max-w-xs px-6">
               {NAV_ITEMS.map((item, i) => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
@@ -353,7 +335,7 @@ const Navigation = () => {
                     {item.name}
                     {isActive && (
                       <motion.span
-                        layoutId="mobile-active-indicator"
+                        layoutId="mobile-active-dot"
                         className="absolute -right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary"
                       />
                     )}
@@ -368,13 +350,7 @@ const Navigation = () => {
                       transition={{ delay: 0.06 * i + 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                       className="w-full"
                     >
-                      <Link
-                        to={item.href}
-                        onClick={() => setMenuOpen(false)}
-                        className={sharedClass}
-                      >
-                        {inner}
-                      </Link>
+                      <Link to={item.href} onClick={() => setIsMobileOpen(false)} className={sharedClass}>{inner}</Link>
                     </motion.div>
                   );
                 }
@@ -393,29 +369,25 @@ const Navigation = () => {
                 );
               })}
 
-              {/* Mobile action buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.42, duration: 0.4 }}
+                transition={{ delay: 0.45, duration: 0.4 }}
                 className="flex gap-3 mt-8 pt-6 border-t border-border/30 w-full justify-center"
               >
                 <a href="/Enock_Resume.pdf" download="Enock_Uwumukiza_Resume.pdf">
-                  <Button
-                    size="sm"
-                    className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
-                  >
-                    <Download className="mr-1.5 h-3.5 w-3.5" />
+                  <Button size="sm" className="bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground rounded-full">
+                    <Download className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
                     Resume
                   </Button>
                 </a>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => { setIsMobileOpen(false); setTimeout(() => setShowTerminal(true), 300); }}
+                  onClick={() => { setIsMobileOpen(false); setTimeout(() => setShowTerminal(true), 350); }}
                   className="text-muted-foreground hover:text-primary rounded-full"
                 >
-                  <Terminal className="mr-1.5 h-3.5 w-3.5" />
+                  <Terminal className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />
                   Terminal
                 </Button>
               </motion.div>
@@ -427,7 +399,9 @@ const Navigation = () => {
       {/* ── Terminal easter egg ── */}
       <AnimatePresence>
         {showTerminal && (
-          <TerminalEmulator onClose={() => setShowTerminal(false)} />
+          <Suspense fallback={null}>
+            <TerminalEmulator onClose={() => setShowTerminal(false)} />
+          </Suspense>
         )}
       </AnimatePresence>
     </>
