@@ -52,7 +52,24 @@ const Footer = () => {
   const OPEN_TO_WORK = true; // toggle this when not available
 
   return (
-    <footer className="bg-background border-t border-border/50 px-4">
+    <footer className="bg-background px-4">
+      {/* Animated gradient divider */}
+      <div className="relative h-px overflow-visible mb-0">
+        <motion.div
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-primary to-transparent origin-left"
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, delay: 0.3 }}
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/40 to-transparent blur-sm"
+        />
+      </div>
       {/* Full-width CTA */}
       <div className="border-b border-border/50">
         <div className="container mx-auto max-w-6xl py-16 text-center space-y-6">
