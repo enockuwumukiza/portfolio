@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Code, Coffee, Terminal, Github, Linkedin, Twitter, Mail, Download, Clock, MapPin } from 'lucide-react';
+import { Heart, Code, Coffee, Terminal, Github, Linkedin, Twitter, Mail, Download, Clock, MapPin, Rss } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { track } from '@/lib/analytics';
 
 const QUICK_LINKS = [
-  { label: 'About',      href: '#about'      },
-  { label: 'Projects',   href: '#projects'   },
-  { label: 'Skills',     href: '#skills'     },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Contact',    href: '#contact'    },
+  { label: 'About',      href: '#about',      external: false },
+  { label: 'Projects',   href: '#projects',   external: false },
+  { label: 'Skills',     href: '#skills',     external: false },
+  { label: 'Experience', href: '#experience', external: false },
+  { label: 'Contact',    href: '#contact',    external: false },
 ];
 
 const SOCIAL = [
@@ -162,6 +163,15 @@ const Footer = () => {
                     </a>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    to="/blog"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded inline-flex items-center gap-1.5"
+                  >
+                    <Rss className="h-3 w-3" />
+                    Blog
+                  </Link>
+                </li>
                 <li>
                   <a
                     href="/Enock_Resume.pdf"
