@@ -13,6 +13,9 @@ import {
   Clock,
   MapPin,
   Rss,
+  Radio,
+  Wrench,
+  BookOpen,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -231,6 +234,33 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link
+                    to="/now"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded inline-flex items-center gap-1.5"
+                  >
+                    <Radio className="h-3 w-3" />
+                    Now
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/uses"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded inline-flex items-center gap-1.5"
+                  >
+                    <Wrench className="h-3 w-3" />
+                    Uses
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/guestbook"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded inline-flex items-center gap-1.5"
+                  >
+                    <BookOpen className="h-3 w-3" />
+                    Guestbook
+                  </Link>
+                </li>
+                <li>
                   <a
                     href="/Enock_Resume.pdf"
                     download
@@ -277,10 +307,21 @@ const Footer = () => {
           viewport={{ once: true }}
           className="pt-8 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground"
         >
-          <div className="flex items-center gap-1.5">
-            © {year} Enock Uwumukiza · Designed & built with
-            <Heart className="h-3.5 w-3.5 text-red-500 animate-pulse" aria-hidden="true" />
-            in Kigali
+          <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 text-center sm:text-left">
+            <span className="flex items-center gap-1.5">
+              © {year} Enock Uwumukiza · Designed & built with
+              <Heart className="h-3.5 w-3.5 text-red-500 animate-pulse" aria-hidden="true" />
+              in Kigali
+            </span>
+            <span className="hidden sm:inline text-border">·</span>
+            <a
+              href="https://github.com/EnochLabs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Shipped under EnochLabs
+            </a>
           </div>
           <a
             href="https://github.com/enockuwumukiza/portfolio"

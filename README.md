@@ -68,6 +68,8 @@ docker-compose up -d
 | GET    | /api/projects/:slug  | Get single project  |
 | POST   | /api/analytics/track | Track event         |
 | GET    | /api/analytics/stats | Analytics summary   |
+| GET    | /api/guestbook       | List guestbook entries |
+| POST   | /api/guestbook       | Create guestbook entry |
 
 ---
 
