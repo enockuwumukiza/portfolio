@@ -17,6 +17,7 @@ import projectRoutes from './routes/project.routes';
 import analyticsRoutes from './routes/analytics.routes';
 import healthRoutes from './routes/health.routes';
 import githubRoutes from './routes/github.routes';
+import guestbookRoutes from './routes/guestbook.routes';
 
 const app: Application = express();
 
@@ -41,6 +42,13 @@ const contactLimiter = rateLimit({
   message: { error: 'Too many messages sent. Please wait before trying again.' },
 });
 
+// Guestbook writes — generous read, tighter write to deter spam
+const guestbookWriteLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  message: { error: 'Too many guestbook posts. Please wait before signing again.' },
+});
+
 // ── Body parsing ─────────────────────────────────────────────
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
@@ -62,6 +70,7 @@ app.use('/api/contact', contactLimiter, contactRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/github', githubRoutes);
+app.use('/api/guestbook', guestbookWriteLimiter, guestbookRoutes);
 
 // ── Error handling ───────────────────────────────────────────
 app.use(notFound);

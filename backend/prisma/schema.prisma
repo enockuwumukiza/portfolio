@@ -37,3 +37,16 @@ model AnalyticsEvent {
 
   @@map("analytics_events")
 }
+
+// ── Guestbook entries ────────────────────────────────────────
+model GuestbookEntry {
+  id        String   @id @default(cuid())
+  name      String
+  message   String   @db.Text
+  link      String? // optional personal site / GitHub / X profile
+  approved  Boolean  @default(true) // flip to false to moderate before showing publicly
+  createdAt DateTime @default(now())
+
+  @@map("guestbook_entries")
+  @@index([approved, createdAt])
+}

@@ -10,6 +10,9 @@ import NotFound from './pages/NotFound';
 
 const BlogListPage = lazy(() => import('./pages/Blog'));
 const BlogPostPage = lazy(() => import('./pages/BlogPost'));
+const NowPage = lazy(() => import('./pages/Now'));
+const UsesPage = lazy(() => import('./pages/Uses'));
+const GuestbookPage = lazy(() => import('./pages/Guestbook'));
 
 const queryClient = new QueryClient();
 
@@ -61,6 +64,38 @@ function AnimatedRoutes() {
             <PageTransition>
               <Suspense fallback={<BlogFallback />}>
                 <BlogPostPage />
+              </Suspense>
+            </PageTransition>
+          }
+        />
+
+        {/* Personal-website pages */}
+        <Route
+          path="/now"
+          element={
+            <PageTransition>
+              <Suspense fallback={<BlogFallback />}>
+                <NowPage />
+              </Suspense>
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/uses"
+          element={
+            <PageTransition>
+              <Suspense fallback={<BlogFallback />}>
+                <UsesPage />
+              </Suspense>
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/guestbook"
+          element={
+            <PageTransition>
+              <Suspense fallback={<BlogFallback />}>
+                <GuestbookPage />
               </Suspense>
             </PageTransition>
           }
