@@ -95,6 +95,117 @@ export const projects: Project[] = [
     year: 2023,
   },
   {
+    slug: 'ecyber-security',
+    title: 'eCyber Security Platform',
+    tagline: 'AI-powered cybersecurity monitoring and intrusion detection',
+    description:
+      'Full-stack cybersecurity platform combining a Python backend with an Electron/React frontend. Provides real-time network traffic analysis, ML-based intrusion detection, system monitoring, firewall management, and a unified security dashboard for SMEs.',
+    category: 'ml',
+    tech: ['TypeScript', 'Python', 'React', 'Electron', 'FastAPI', 'scikit-learn', 'Socket.io'],
+    features: [
+      'Real-time network packet analysis and anomaly detection',
+      'ML-based intrusion detection and prevention (IDS/IPS)',
+      'Unified security dashboard with live threat feed',
+      'System health monitoring and vulnerability scanning',
+      'Firewall rule management UI',
+    ],
+    problem:
+      'Enterprise-grade cybersecurity tools are expensive and complex, leaving SMEs exposed to network threats they cannot detect or respond to.',
+    solution:
+      'Built an open-source, all-in-one security platform with a Python analysis engine and Electron desktop frontend — giving SMEs proactive threat detection without the enterprise price tag.',
+    outcome:
+      'Largest codebase across all projects (2.1M+ TypeScript + 1.7M+ Python lines). Actively maintained with ML anomaly detection pipeline.',
+    demoUrl: null,
+    githubUrl: 'https://github.com/Enochrwa/ecyber-system',
+    imageUrl: '/images/wardrobe.jpeg',
+    featured: true,
+    year: 2025,
+  },
+  {
+    slug: 'cropmind',
+    title: 'CropMind',
+    tagline: 'Offline-first AI crop disease diagnosis for smallholder farmers',
+    description:
+      'Mobile-first AI platform that lets farmers photograph a diseased plant and get an instant offline diagnosis on a $60 Android. Built with React Native + Expo, TensorFlow Lite on-device model (2 MB), and a FastAPI backend for enriched analysis.',
+    category: 'ml',
+    tech: ['React Native', 'Expo', 'FastAPI', 'Python', 'TensorFlow Lite', 'SQLite', 'Whisper'],
+    features: [
+      'On-device disease detection — works fully offline',
+      'Step-by-step treatment plan in local language (EN / Kinyarwanda / FR)',
+      'Voice Q&A with AI agronomist (Whisper ASR)',
+      'Nearest supplier lookup with current stock',
+      'Local crop price feed and farm history tracking',
+      'Micro-payment monetisation (from 500 RWF / ~$0.40)',
+    ],
+    problem:
+      '500 million smallholder farmers lose 20–40% of harvests yearly to crop disease, with no access to agronomists and unreliable internet.',
+    solution:
+      'Put a 2 MB TFLite model directly on the device so diagnosis works offline. Enriched reports (supplier, price, treatment) are fetched when connectivity is available.',
+    outcome:
+      'Targets the African smallholder market; offline detection always free. Active development as of June 2026.',
+    demoUrl: null,
+    githubUrl: 'https://github.com/Enochrwa/CropMind',
+    imageUrl: '/images/wardrobe.jpeg',
+    featured: true,
+    year: 2026,
+  },
+  {
+    slug: 'inzira-edrps',
+    title: 'INZIRA EDRPS',
+    tagline: 'Clinical AI for early disease risk prediction in Rwanda',
+    description:
+      'Multi-disease clinical decision support system for Rwanda\'s hospitals. Uses routine CBC and biochemistry lab data to screen for Anemia, CVD, CKD, Type 2 Diabetes, and Liver Disease with AUC-ROC up to 1.000. Built with Streamlit, XGBoost, CatBoost, and SHAP explainability.',
+    category: 'ml',
+    tech: ['Python', 'Streamlit', 'XGBoost', 'CatBoost', 'LightGBM', 'scikit-learn', 'SHAP', 'Pandas'],
+    features: [
+      'Five disease modules: AnemIA, CardioScan, NephroCheck, GlucoSense, HepatoScan',
+      'AUC-ROC: 1.000 (Anemia & CKD), 0.976 (T2DM), 0.962 (Liver), 0.802 (CVD)',
+      'Explainable AI — SHAP rationales for every prediction',
+      'KDIGO / ADA 2025 / WHO clinical staging',
+      'Print-ready clinical reports with cross-disease insights',
+      'Clinical safety alerts (Hypertensive Crisis, Advanced CKD)',
+    ],
+    problem:
+      'Rwanda\'s district hospitals lack access to specialist diagnostics, causing late detection of NCDs that are treatable if caught early from routine lab work.',
+    solution:
+      'Trained stacking ensembles on Rwanda-representative clinical data and wrapped them in a 3-screen clinical workstation: patient registration → multi-parameter entry → parallel inference and report generation.',
+    outcome:
+      'Started from RMH internship data collection. Five disease modules deployed, with clinical-grade accuracy validated against WHO / ADA / KDIGO standards.',
+    demoUrl: null,
+    githubUrl: 'https://github.com/james7dev/Early-Disease-Risk-Prediction-System',
+    imageUrl: '/images/resume.jpeg',
+    featured: false,
+    year: 2024,
+  },
+  {
+    slug: 'soma-market',
+    title: 'SOMA Market',
+    tagline: "Rwanda's offline-capable digital marketplace",
+    description:
+      'Full-stack e-commerce marketplace built for African users with offline support, Kinyarwanda / French / English i18n, MTN MoMo and Airtel Money payment integration, AI-powered product recommendations via Hugging Face, and real-time Socket.IO notifications.',
+    category: 'fullstack',
+    tech: ['React', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Redux Toolkit', 'Socket.IO', 'Redis'],
+    features: [
+      'Three-language i18n: English, Kinyarwanda, Français',
+      'MTN MoMo / Airtel Money payment integration',
+      'AI product recommendations (Mistral-7B via Hugging Face)',
+      'Offline-capable PWA with service worker',
+      'Real-time notifications via Socket.IO',
+      'Google OAuth + Email OTP authentication',
+      'Cloudinary media storage + Leaflet maps',
+    ],
+    problem:
+      'Rwanda\'s growing e-commerce sector lacks a platform designed for local connectivity constraints, local payment methods, and local languages.',
+    solution:
+      'Built a mobile-first marketplace with offline capability, native MTN MoMo / Airtel Money checkout, and full Kinyarwanda localisation — all on a zero-cost infrastructure stack.',
+    outcome: 'Active development as of June 2026. CI pipeline configured on GitHub Actions.',
+    demoUrl: null,
+    githubUrl: 'https://github.com/Enochrwa/soma-connect',
+    imageUrl: '/images/chat.png',
+    featured: false,
+    year: 2025,
+  },
+  {
     slug: 'handyrwanda',
     title: 'HandyRwanda',
     tagline: 'Service marketplace connecting Rwandan clients with skilled artisans',
