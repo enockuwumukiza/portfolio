@@ -13,7 +13,7 @@ const TIMELINE = [
     role: 'Full-Stack Developer & ML Engineer',
     context: 'Freelance & Open Source · Kigali, Rwanda',
     achievement:
-      'Built HandyRwanda (Sprint 7), INZIRA EDRPS clinical AI, and KivuNova SaaS — all solo.',
+      'Built HandyRwanda (Sprint 13+), CropMind offline AI, eCyber security platform, SOMA Market, and INZIRA EDRPS clinical AI — all solo.',
     icon: Cpu,
   },
   {
@@ -39,9 +39,10 @@ const BADGE_GROUPS = [
   {
     label: 'Currently',
     items: [
-      '🚧 HandyRwanda — Sprint 7 shipped',
-      '📖 Turborepo MFE architecture',
-      '🔬 INZIRA EDRPS clinical AI',
+      '🚧 HandyRwanda — Sprint 13 shipped',
+      '🌱 CropMind — offline AI for farmers',
+      '🔐 eCyber — security platform',
+      '🛒 SOMA Market — Rwanda marketplace',
     ],
   },
 ];
@@ -181,8 +182,8 @@ const About = () => {
             <Card className="bg-gradient-card border-border/50">
               <CardContent className="p-6 grid grid-cols-3 gap-4 divide-x divide-border/40">
                 <AnimatedStat value={3} label="Years building" />
-                <AnimatedStat value={10} label="Projects shipped" />
-                <AnimatedStat value={5} label="Active projects" />
+                <AnimatedStat value={14} label="Projects shipped" />
+                <AnimatedStat value={6} label="Active projects" />
               </CardContent>
             </Card>
 
